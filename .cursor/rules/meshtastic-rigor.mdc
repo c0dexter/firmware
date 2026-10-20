@@ -1,0 +1,28 @@
+---
+description: Anti-hallucination and codebase-as-truth standards for Meshtastic firmware work
+alwaysApply: true
+---
+
+# Meshtastic — rigor & anti-hallucination
+
+## Source of truth
+
+- Prefer code in this repo over memory. Read headers before using APIs, macros, or registers.
+- If a declaration is not in context, open the header — do not invent signatures.
+- Follow existing patterns: Observer/Observable, `ProtobufModule<T>`, `Throttle` (never raw `millis()` compares), logging via `LOG_*` from `DebugConfiguration.h`.
+- Canonical upstream agent docs: `.github/copilot-instructions.md`. Do not contradict AGENTS.md / CLAUDE.md for upstream PRs.
+
+## Adversarial self-check (internal)
+
+Before non-trivial code changes, verify at least:
+
+1. Two failure modes (race, ISR/blocking, buffer overflow, role/routing regression, brownout).
+2. Impact on `MeshService`, `RadioInterface`, `Router` / flooding / next-hop, `NodeDB`, `PowerFSM` when touched.
+3. No regression for other roles (CLIENT, CLIENT_MUTE, CLIENT_BASE, ROUTER, ROUTER_LATE, …).
+
+## Project tracking (this fork / CLIENT_BASE work)
+
+- Session progress: Cursor todos (`TodoWrite`).
+- Persistent project state lives only under `.cursor/client-base-project/` (knowledge base, text kanban, TODO, feature README, use-cases). Update these when findings or decisions change.
+- Do **not** add `KANBAN_*.md`, `KNOWLEDGE_BASE.md`, or feature novels at the repo root or under `docs/` — upstream forbids a docs tree here.
+- Upstream-facing write-ups belong in the PR body and eventually [meshtastic/meshtastic](https://github.com/meshtastic/meshtastic) docs — keep `.cursor/client-base-project/` as the working knowledge base.

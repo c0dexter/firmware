@@ -1,0 +1,59 @@
+# Knowledge base — CLIENT_BASE project
+
+_Last updated: 2026-10-21 (MVP/FVP definitions)_
+
+Canonical long-form analysis: **[ANALYSIS_AND_SIMULATION.md](ANALYSIS_AND_SIMULATION.md)**.
+
+## Decisions (accepted)
+
+1. **Keep role name `CLIENT_BASE`** — solid fix + secretary upgrade, not a new role.
+2. **Root user pain:** favorites elevate only `from`/`to`; channel broadcasts from the mesh are not elevated → roof phone sees messages, home often does not (cancel-on-dupe + hidden terminal) → operators install ROUTER/ROUTER_LATE.
+3. **L1 + L2 together:** live fix for in-range home; secretary for offline / missed window. L2 alone is insufficient.
+4. **L1 default (LOCKED):** late never-cancel only on **secondary channels configured on the base**. Wins multi-world system score; lowest public TX among effective fixes.
+5. **L1 opt-in (LOCKED):** config to also elevate **primary TEXT** — default **off**. Honest UX: without it, primary stays best-effort CLIENT-like.
+6. **L1 forbidden default (LOCKED):** never-cancel on all channels / stealth ROUTER_LATE.
+7. **L2 (LOCKED):** TEXT-focused buffer on those secondaries; shared ring; **per-favorite cursor**; TTL/ring eviction; **never purge-on-first-ACK**.
+8. **Platforms (LOCKED from `sim_platform_storage.py`):** LEAN 256 B records; nRF = flash+index (viable for 24h@4/h); ESP no-PSRAM RAM ring OK for 24h; ESP+PSRAM must cap for dump time; STM32WL = L2 excluded. Not a PSRAM-only global S&F clone.
+9. **L3** peer sync after TTL: acknowledged; **not MVP**.
+10. **Tracking:** this folder + Cursor todos; GitHub Project when `gh` re-authed; no root `docs/` in firmware.
+11. **Quality bar:** docs here + unit tests + hot-path performance bounds mandatory.
+12. **MVP vs FVP:** defined in `MVP_AND_FVP.md`. MVP = L1 secondary + L2 secretary/cursors/caps/tests. FVP = MVP + app UX + hardening + L3 (phone BT sync first, LoRa peer optional). Next MVP step = Unity L1 then implement L1.
+
+## Findings (code)
+
+- `FloodingRouter::roleAllowsCancelingDupe`: CLIENT_BASE cancels unless `isFromOrToFavoritedNode`.
+- Broadcast: `isFromOrToFavoritedNode` → only `isFavorite(from)`.
+- Late window for favorite from/to does not help generic mesh→home broadcasts.
+- `shouldRebroadcastEarlyLikeRouter`: only ROUTER.
+- Auto-favorite suppressed on CLIENT_BASE (favorite overloaded).
+- Existing S&F `lastRequest[dest]` cursors — pattern to mirror for L2 (separate product).
+
+## Simulation summary (pointer)
+
+| Artifact | Result highlight |
+|----------|------------------|
+| `sim_abstract.py` | Today ~63% home delivery vs L1-all ~86% but ~92% roof TX; secondary-scoped airtime ~60/100 |
+| Private-only urban | ~59% → ~86% with L1 secondary |
+| `sim_variants.py` | Aggregate winner: **l1_secondary_only**; L1-all ≈ ROUTER scores |
+| Multi-reader | Cursors keep Bart fed; purge-on-ACK drops shared history |
+| Offline 6h | L1 recovers 0; L1+L2 recovers buffer at local unicast cost |
+| `sim_platform_storage.py` | nRF/ESP/RP fit 24h TTL with lean records; dump ~4 min/96 msg; PSRAM needs caps; STM32WL no L2 |
+
+Details and tables: `ANALYSIS_AND_SIMULATION.md` §9.
+
+## Open questions
+
+- Exact numeric caps to ship: `history_return_max`, TTL, records per MEM_CLASS (sim suggests 24h@4/h feasible; dump cap e.g. 32–64 msg/session).
+- Protobuf: extend StoreAndForward vs new private control messages (client impact).
+- Exact config key name for primary TEXT opt-in.
+- GitHub Project board ID after `gh auth login`.
+- Upstream PRs: consider omitting `.cursor/` if reviewers prefer; keep on fork.
+
+## Rejected / deferred
+
+- Mandatory visible `<thinking>` every reply (original mega-prompt).
+- Repo-root KANBAN/KNOWLEDGE (upstream house rule).
+- Purge-on-ACK (PDF draft) — breaks multi-favorite homes.
+- L1-all-channels as default — mesh-hostile.
+- New role enum — unnecessary.
+- L3 peer sync — post-MVP.

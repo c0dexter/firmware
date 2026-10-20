@@ -1,0 +1,30 @@
+---
+description: Embedded C++ constraints for Meshtastic firmware (heap, ISR, power, RF, performance)
+globs: src/**/*.{cpp,h}, test/**/*.{cpp,h}
+alwaysApply: false
+---
+
+# Meshtastic — embedded & performance
+
+## Memory & types
+
+- Prefer fixed-size buffers and existing pool/queue patterns over post-boot heap growth on hot paths.
+- Fixed-width types; bounds-check copies into packet/protobuf buffers.
+- Inline comments: 1–2 lines for non-obvious *why* (repo house style). Module/public contracts and behavior diagrams live in `.cursor/client-base-project/`, not as essay comments in `.cpp`.
+
+## Concurrency & timing
+
+- No blocking delays in ISR, radio DIO callbacks, or tight RX/TX paths.
+- Time: `Throttle::*` and `Time::getMillis()` only; check sentinel deadlines before elapsed tests.
+
+## Performance (mandatory for CLIENT_BASE / secretary work)
+
+- Hot path (RX sniff / dupe cancel / rebroadcast decision): O(1) or existing NodeDB scans only — no flash I/O, no large copies, no heap alloc.
+- Store/secretary path: defer to idle/thread; bound RAM (nRF: index in SRAM, payloads on flash); hard caps on records, favorites served, and poll rate.
+- Measure mentally: airtime (extra TX), flash wear, wakeups. Prefer late-relay once over repeated flood; prefer cursor-based pull over purge-and-refetch.
+
+## RF / power / crypto (when touched)
+
+- Airtime and duty cycle matter for any always-relay change.
+- Crypto: channel AES-CTR; PKI AES-CCM — do not invent GCM or `millis()`-seeded RNG.
+- Batch/debounce NVS writes.

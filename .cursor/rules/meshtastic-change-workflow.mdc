@@ -1,0 +1,38 @@
+---
+description: 4-phase workflow, docs+tests gate, pre-commit status for CLIENT_BASE work
+alwaysApply: true
+---
+
+# Meshtastic — change workflow
+
+## Pipeline (non-trivial work)
+
+1. **Map** — classes, call sites, protobuf, tests under `test/`.
+2. **Budget** — RAM/flash/airtime/role interactions; update knowledge base with the decision.
+3. **Implement** — small diffs; clean, optimized; `trunk fmt` before commit.
+4. **Verify** — Unity tests required for new branchy behavior; `./bin/run-tests.sh` (or focused suite). Hardware MCP only with operator approval for destructive ops.
+
+## Documentation & tracking (mandatory on this feature branch)
+
+Before coding a chunk: read `.cursor/client-base-project/KNOWLEDGE_BASE.md` and `KANBAN.md`.
+
+After a finding or decision: append to `KNOWLEDGE_BASE.md`; move kanban cards; refresh `TODO.md`.
+
+**Before every commit:**
+
+1. Update kanban + TODO to match reality.
+2. Ensure use-cases / schemas / README in `.cursor/client-base-project/` still match the code.
+3. Confirm unit tests cover the change (or note explicit gap in knowledge base — no silent gaps).
+4. Session status blurb for the user: what landed, what is next, doc/test debt.
+
+## CLIENT_BASE target contract (this project)
+
+See `.cursor/client-base-project/ANALYSIS_AND_SIMULATION.md` (locked).
+
+- **Keep** role `CLIENT_BASE` (no new role).
+- **L1 default:** late never-cancel on **secondary channels on the base** only — not `from`/`to` favorite alone for elevation.
+- **L1 opt-in:** primary TEXT elevate — default **off** (honest primary best-effort).
+- **L1 forbidden default:** all-channel never-cancel (stealth ROUTER_LATE).
+- **L2:** secondary TEXT buffer; per-favorite cursor; no purge-on-first-ACK; ESP/nRF backends as documented.
+- **Not** global PSRAM `StoreForwardModule`. **L3** deferred.
+- Favorites = **served** household ACL. Prefer mesh-safe scoped TX over city amplifier.

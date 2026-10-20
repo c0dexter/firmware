@@ -1,0 +1,34 @@
+---
+description: CLIENT_BASE secretary project — always load knowledge base path and quality bar
+alwaysApply: true
+---
+
+# CLIENT_BASE project — agent operating rules
+
+## Always use
+
+| Artifact | Path |
+|----------|------|
+| Feature README | `.cursor/client-base-project/README.md` |
+| Analysis + sim (locked policy) | `.cursor/client-base-project/ANALYSIS_AND_SIMULATION.md` |
+| MVP vs FVP scope | `.cursor/client-base-project/MVP_AND_FVP.md` |
+| Knowledge base | `.cursor/client-base-project/KNOWLEDGE_BASE.md` |
+| Text kanban | `.cursor/client-base-project/KANBAN.md` |
+| TODO | `.cursor/client-base-project/TODO.md` |
+| Use cases / schemas | `.cursor/client-base-project/use-cases.md`, `schemas.md` |
+| Skills | `.cursor/skills/client-base-secretary/`, `.cursor/skills/project-status-commit/` |
+
+Read the knowledge base at the start of substantive work. Write findings there immediately (do not keep critical design only in chat).
+
+## Quality bar
+
+- Optimized hot paths; bounded storage; no significant idle load on constrained nodes.
+- Unit tests for routing/secretary logic.
+- Clear docs in `.cursor/client-base-project/` (README, use-cases, schemas as mermaid/text).
+- Code clean and reviewable; minimal inline noise; contracts documented outside hot loops.
+
+## Remotes
+
+- `origin` = upstream `meshtastic/firmware` (fetch).
+- `fork` = `c0dexter/firmware` (push feature branches).
+- Do not commit secrets. Track `.cursor/` on this fork; omit from upstream PRs if reviewers prefer.
