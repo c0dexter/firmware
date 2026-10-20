@@ -8,7 +8,7 @@ Sync manually with GitHub Project when available.
 - [x] Multi-variant sim (`sim_variants.py`) across 4 worlds + system score
 - [x] Abstract Monte Carlo sim (`sim_abstract.py`) + conclusions in KB
 - [ ] L2 protobuf / poll message sketch (MVP)
-- [ ] L2 storage API sketch ESP vs nRF (MVP)
+- [x] L2 RAM storage API (`ClientBaseSecretaryStore`); nRF flash spill still open
 - [ ] GitHub Project board + columns
 - [x] MVP_AND_FVP.md written
 - [ ] M2: opt-in primary TEXT config (default off)
@@ -17,7 +17,8 @@ Sync manually with GitHub Project when available.
 
 - [x] MVP: Unity tests current vs desired L1 (secondary never-cancel)
 - [x] MVP: implement L1 + tests
-- [ ] MVP: L2 ring + per-favorite cursor + poll/unicast + tests
+- [x] MVP: L2 ring + per-favorite cursor store + Unity (`ClientBaseSecretaryStore`)
+- [ ] MVP: L2 module ingest + poll/unicast + tests
 - [ ] MVP: caps (`history_return_max`, max favorites) + docs PR-ready
 
 ## Backlog (FVP - after MVP)
@@ -32,12 +33,12 @@ Sync manually with GitHub Project when available.
 
 ## In progress
 
-- [ ] MVP L2 secretary (next)
+- [ ] MVP L2 module + poll/unicast (store core done)
 
 ## Verification
 
 - [x] Native tests green for L1 (`test_client_base_l1`, coverage env, 7/7)
-- [ ] Native tests for cursor/TTL (L2)
+- [x] Native tests for cursor/TTL (L2 store) - `test_client_base_l2_store` 7/7
 - [ ] Performance notes recorded (hot path, flash wear)
 
 ## Done
@@ -52,3 +53,4 @@ Sync manually with GitHub Project when available.
 - [x] Platform storage/dump sim (`sim_platform_storage.py`) + §9 in ANALYSIS
 - [x] Agent rules + skills + project knowledge plane bootstrap
 - [x] **L1 live bridge** - `ClientBaseRelay.h` + `isConfiguredSecondary` + FloodingRouter + Unity suite
+- [x] **L2 store core** - `ClientBaseSecretaryStore` + Unity multi-reader/TTL

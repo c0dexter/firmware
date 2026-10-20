@@ -17,7 +17,9 @@
 - [x] Define MVP vs FVP in docs
 - [x] Unity tests: L1 secondary never-cancel + policy helpers (`test_client_base_l1`)
 - [x] Implement L1 + tests (FloodingRouter + Channels + ClientBaseRelay.h)
-- [ ] L2 storage (ESP+nRF) + cursors + poll/unicast + tests
+- [x] L2 RAM store + cursors + TTL Unity (`ClientBaseSecretaryStore`)
+- [ ] L2 module: ingest secondary TEXT + poll/unicast + tests
+- [ ] L2 nRF flash backend (RAM ok for first ESP path)
 - [ ] M2 opt-in primary TEXT config (default off)
 - [ ] Caps + honest primary opt-in docs; PR-ready
 

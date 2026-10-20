@@ -1,6 +1,6 @@
 # Knowledge base - CLIENT_BASE project
 
-_Last updated: 2026-10-21 (L1 implemented)_
+_Last updated: 2026-10-21 (L1 + L2 store core)_
 
 Canonical long-form analysis: **[ANALYSIS_AND_SIMULATION.md](ANALYSIS_AND_SIMULATION.md)**.  
 Work log: **[JOURNAL.md](JOURNAL.md)**.
@@ -38,6 +38,12 @@ Work log: **[JOURNAL.md](JOURNAL.md)**.
 - `ClientBaseRelay.h` - `clientBaseAllowsCancelingDupe(fav, secondary)` / `clientBaseUsesLateRebroadcastWindow(...)` (pure, testable).
 - `FloodingRouter`: CLIENT_BASE never-cancels and clamps late window when favorite **or** configured secondary; primary non-favorite still CLIENT cancel.
 - Tests: `test/test_client_base_l1/` - 7/7 green on `coverage` (host may need Dockerfile.test packages or `.local-deps`).
+
+### L2 store core (current)
+
+- `ClientBaseSecretaryStore` - calloc ring + fixed cursor slots; lean 256 B records; `push` / `expire` / `ensureFavorite` / `pullNext` (cursor-only advance).
+- Tests: `test/test_client_base_l2_store/` - 7/7 (multi-reader no purge, TTL, capacity, favorite cap).
+- Still open: ProtobufModule wiring, poll RR, unicast TX, flash spill for nRF, `history_return_max` session cap.
 
 ## Simulation summary (pointer)
 

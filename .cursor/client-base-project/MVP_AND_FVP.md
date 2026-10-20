@@ -42,7 +42,7 @@ Policy lock: `ANALYSIS_AND_SIMULATION.md`, `README.md`.
 ### Kryteria „MVP done”
 
 - [x] UC1 (secondary live) przechodzi testami Unity (`test_client_base_l1`) - hardware smoke still open.
-- [ ] UC5/UC6 (multi-cursor + offline pull) przechodzą testami.
+- [x] UC5/UC6 store-level (multi-cursor + TTL) - `test_client_base_l2_store`; poll/unicast path still open.
 - [ ] UC2 uczciwie udokumentowane (primary bez opt-in).
 - [x] UC8: default nie zachowuje się jak ROUTER na public (primary non-favorite still cancels).
 - [ ] nRF i co najmniej jeden ESP budują się z L2 caps.
