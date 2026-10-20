@@ -15,6 +15,8 @@ web.tar
 .idea
 .platformio
 .local
+.local-deps/
+*.deb
 .cache
 
 .DS_Store

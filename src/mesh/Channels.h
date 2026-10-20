@@ -90,6 +90,10 @@ class Channels
     // Returns true if the channel has the default name and PSK
     bool isDefaultChannel(ChannelIndex chIndex);
 
+    // True when this index is an enabled SECONDARY with settings (not PRIMARY, not DISABLED).
+    // Used by CLIENT_BASE L1 live-bridge: never-cancel rebroadcast on secondaries the base holds.
+    bool isConfiguredSecondary(ChannelIndex chIndex);
+
     // Returns true if this channel's effective key is publicly decryptable (open or well-known/default PSK).
     bool usesPublicKey(ChannelIndex chIndex);
     // Returns true if the channel is "well known": its PSK is absent or a

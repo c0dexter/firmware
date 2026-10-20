@@ -453,6 +453,14 @@ bool Channels::isDefaultChannel(ChannelIndex chIndex)
     return false;
 }
 
+bool Channels::isConfiguredSecondary(ChannelIndex chIndex)
+{
+    if (chIndex >= getNumChannels())
+        return false;
+    const meshtastic_Channel &ch = getByIndex(chIndex);
+    return ch.has_settings && ch.role == meshtastic_Channel_Role_SECONDARY;
+}
+
 bool cryptoKeyIsPublic(const CryptoKey &key)
 {
     if (key.length == 0)

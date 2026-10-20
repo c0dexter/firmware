@@ -1,4 +1,6 @@
 #include "FloodingRouter.h"
+#include "Channels.h"
+#include "ClientBaseRelay.h"
 #include "MeshTypes.h"
 #include "NodeDB.h"
 #include "configuration.h"
@@ -124,10 +126,9 @@ bool FloodingRouter::roleAllowsCancelingDupe(const meshtastic_MeshPacket *p)
     }
 
     if (config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE) {
-        // CLIENT_BASE: if the packet is from or to a favorited node,
-        // we should act like a ROUTER and should never cancel a rebroadcast (i.e. we should always rebroadcast),
-        // even if we've heard another station rebroadcast it already.
-        return !nodeDB->isFromOrToFavoritedNode(*p);
+        // L1: never cancel on configured SECONDARY; keep favorite from/to. Primary stays CLIENT-like.
+        const bool fav = nodeDB && nodeDB->isFromOrToFavoritedNode(*p);
+        return clientBaseAllowsCancelingDupe(fav, channels.isConfiguredSecondary(p->channel));
     }
 
     // All other roles (such as CLIENT) should cancel a rebroadcast if they hear another station's rebroadcast.
@@ -145,9 +146,10 @@ void FloodingRouter::perhapsCancelDupe(const meshtastic_MeshPacket *p)
     if (config.device.role == meshtastic_Config_DeviceConfig_Role_ROUTER_LATE && iface) {
         iface->clampToLateRebroadcastWindow(getFrom(p), p->id);
     }
-    if (config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE && iface && nodeDB &&
-        nodeDB->isFromOrToFavoritedNode(*p)) {
-        iface->clampToLateRebroadcastWindow(getFrom(p), p->id);
+    if (config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE && iface) {
+        const bool fav = nodeDB && nodeDB->isFromOrToFavoritedNode(*p);
+        if (clientBaseUsesLateRebroadcastWindow(fav, channels.isConfiguredSecondary(p->channel)))
+            iface->clampToLateRebroadcastWindow(getFrom(p), p->id);
     }
 }
 

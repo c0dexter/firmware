@@ -1,4 +1,4 @@
-# TODO — CLIENT_BASE project
+# TODO - CLIENT_BASE project
 
 ## Immediate (tooling)
 
@@ -9,21 +9,23 @@
 - [x] Platform memory/dump simulation documented
 - [ ] Re-auth `gh` (`gh auth login`) and create GitHub Project; link URL here
 - [x] Track `.cursor/` on fork (docs/rules/skills); omit from upstream PR if needed
+- [x] Journal (`JOURNAL.md`) started
 
 ## MVP (see MVP_AND_FVP.md)
 
 - [x] Abstract + multi-variant + platform sims; policy lock
 - [x] Define MVP vs FVP in docs
-- [ ] Unity tests: current vs desired L1 (secondary)
-- [ ] Implement L1 + tests
+- [x] Unity tests: L1 secondary never-cancel + policy helpers (`test_client_base_l1`)
+- [x] Implement L1 + tests (FloodingRouter + Channels + ClientBaseRelay.h)
 - [ ] L2 storage (ESP+nRF) + cursors + poll/unicast + tests
+- [ ] M2 opt-in primary TEXT config (default off)
 - [ ] Caps + honest primary opt-in docs; PR-ready
 
 ## FVP (later)
 
-- [ ] F1–F7 per `MVP_AND_FVP.md` (apps, hardening, phone BT sync, optional LoRa peer, field)
+- [ ] F1-F7 per `MVP_AND_FVP.md` (apps, hardening, phone BT sync, optional LoRa peer, field)
 
 ## Ongoing
 
-- [ ] After every work chunk: update KANBAN + KNOWLEDGE_BASE + this file
-- [ ] Before every commit: run `project-status-commit` ritual
+- [x] After every work chunk: update KANBAN + KNOWLEDGE_BASE + JOURNAL + this file
+- [x] Before every commit: run `project-status-commit` ritual

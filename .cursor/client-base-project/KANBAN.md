@@ -1,4 +1,4 @@
-# Kanban — CLIENT_BASE
+# Kanban - CLIENT_BASE
 
 Sync manually with GitHub Project when available.
 
@@ -11,15 +11,16 @@ Sync manually with GitHub Project when available.
 - [ ] L2 storage API sketch ESP vs nRF (MVP)
 - [ ] GitHub Project board + columns
 - [x] MVP_AND_FVP.md written
+- [ ] M2: opt-in primary TEXT config (default off)
 
 ## Todo (MVP)
 
-- [ ] MVP: Unity tests current vs desired L1 (secondary never-cancel)
-- [ ] MVP: implement L1 + tests
+- [x] MVP: Unity tests current vs desired L1 (secondary never-cancel)
+- [x] MVP: implement L1 + tests
 - [ ] MVP: L2 ring + per-favorite cursor + poll/unicast + tests
 - [ ] MVP: caps (`history_return_max`, max favorites) + docs PR-ready
 
-## Backlog (FVP — after MVP)
+## Backlog (FVP - after MVP)
 
 - [ ] F1 primary UX in apps
 - [ ] F2 client protocol polish (Android/iOS/web)
@@ -31,17 +32,17 @@ Sync manually with GitHub Project when available.
 
 ## In progress
 
-- [x] Agent rules + skills + project knowledge plane bootstrap
+- [ ] MVP L2 secretary (next)
 
 ## Verification
 
-- [ ] Native tests green for L1
+- [x] Native tests green for L1 (`test_client_base_l1`, coverage env, 7/7)
 - [ ] Native tests for cursor/TTL (L2)
 - [ ] Performance notes recorded (hot path, flash wear)
 
 ## Done
 
-- [x] First commit: docs/rules/skills/sims on fork branch (`da47cfd2a`)
+- [x] First commit: docs/rules/skills/sims on fork branch
 - [x] Audit CLIENT_BASE behavior vs docs
 - [x] Problem analysis (misleading favorites / ROUTER escape hatch)
 - [x] Architecture direction: L1+L2, keep role name, multi-cursor buffer
@@ -49,3 +50,5 @@ Sync manually with GitHub Project when available.
 - [x] Abstract + multi-variant simulations; policy lock
 - [x] Docs updated: ANALYSIS_AND_SIMULATION.md + README/KB/use-cases/schemas/rules/skills sync
 - [x] Platform storage/dump sim (`sim_platform_storage.py`) + §9 in ANALYSIS
+- [x] Agent rules + skills + project knowledge plane bootstrap
+- [x] **L1 live bridge** - `ClientBaseRelay.h` + `isConfiguredSecondary` + FloodingRouter + Unity suite
