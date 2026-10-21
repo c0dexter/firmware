@@ -33,6 +33,10 @@ Follow **[L2_PLAN.md](L2_PLAN.md)** in order:
 - L3 peer / phone BT sync
 - Upstream PR to `meshtastic/firmware`
 
+## Upstream baseline
+
+See **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)** - building on **2.8.1 / `develop`** (~current); **3.0** is future labeled work (roles/packets to watch), not a ship blocker for L2.
+
 ## Resume checklist
 
 1. **[L2_PLAN.md](L2_PLAN.md)** (execution plan)

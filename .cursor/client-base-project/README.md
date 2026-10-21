@@ -58,6 +58,7 @@ See **[MVP_AND_FVP.md](MVP_AND_FVP.md)**. Journal: **[JOURNAL.md](JOURNAL.md)**.
 | ---------------------------- | ------------------------------------------------ |
 | `STATUS.md`                  | One-page current snapshot (start here on resume) |
 | `L2_PLAN.md`                 | Phased L2 secretary implementation plan          |
+| `UPSTREAM_WATCH.md`          | FW baseline vs develop; Meshtastic 3.0 watch     |
 | `ANALYSIS_AND_SIMULATION.md` | Problem analysis, sim results, locked policy     |
 | `MVP_AND_FVP.md`             | MVP scope, done criteria, FVP roadmap            |
 | `JOURNAL.md`                 | Append-only work log                             |

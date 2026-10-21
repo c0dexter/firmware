@@ -1,9 +1,10 @@
 # Knowledge base - CLIENT_BASE project
 
-_Last updated: 2026-10-21 (L2_PLAN.md ready; module paused - see STATUS.md)_
+_Last updated: 2026-10-21 (upstream 2.8/develop + 3.0 watch)_
 
 Canonical long-form analysis: **[ANALYSIS_AND_SIMULATION.md](ANALYSIS_AND_SIMULATION.md)**.  
-Work log: **[JOURNAL.md](JOURNAL.md)**. Execution plan: **[L2_PLAN.md](L2_PLAN.md)**.
+Work log: **[JOURNAL.md](JOURNAL.md)**. Execution plan: **[L2_PLAN.md](L2_PLAN.md)**.  
+Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 
 ## Decisions (accepted)
 
@@ -72,6 +73,12 @@ Details and tables: `ANALYSIS_AND_SIMULATION.md` §9.
 - Exact config key name for primary TEXT opt-in.
 - GitHub Project board ID after `gh auth login`.
 - Upstream PRs: consider omitting `.cursor/` if reviewers prefer; keep on fork.
+- **3.0 / roles:** watch #9942 (role reduction; CLIENT_BASE kept in proposal) and #10042 (packet structure) - see `UPSTREAM_WATCH.md`. Not a L2 blocker today.
+
+## Upstream baseline (2026-10-21)
+
+- Working on **2.8.1-line / `develop`** (~2 commits behind `origin/develop` at check). Latest release stream: **2.8.1 Alpha**.
+- **3.0** = labeled future major (breaking cluster); no ship date. May affect packet headers and role naming; household-base _behavior_ still the right product bet.
 
 ## Rejected / deferred
 

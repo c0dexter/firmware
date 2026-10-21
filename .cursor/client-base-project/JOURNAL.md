@@ -4,6 +4,14 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - Upstream version + 3.0 watch (notes only)
+
+- Baseline: `git describe` ≈ **v2.8.1…**; tip ≈ current **`origin/develop`** (−2). Not on stale master.
+- 3.0: label/holding area (packet structure #10042, roles #9942, telemetry, nRF FS, EU433). No release date.
+- Impact: watch roles/packet issues; **do not block L2**. Notes: `UPSTREAM_WATCH.md`.
+
+---
+
 ## 2026-10-21 - L2 plan ready + pause
 
 Operator pause continues; execution plan written so coding can start cold.
