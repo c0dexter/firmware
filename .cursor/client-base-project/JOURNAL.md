@@ -4,6 +4,17 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - L1.5 free-hop (#8366)
+
+- `ClientBaseHop.h` + wire in `NextHopRouter::perhapsRebroadcast`.
+- FreeHopBumpStart: direct RF from favorite → keep hop_limit, hop_start++ (honest travel; next CB won’t free-hop again).
+- DeliverAtZero: hop_limit already 0 to/from favorite → last-meter TX without inventing public budget.
+- mayRelay includes both L1.5 outcomes (incl. free-hop when originator used hop_limit=0).
+- Unity `test_client_base_l15_hop` **8/8 PASSED** (needs `configuration.h` for C-linkage `setup`/`loop`).
+- Next: P5 hardware smoke (ESP32 + nRF available).
+
+---
+
 ## 2026-10-21 - M2 primary elevate opt-in (runtime)
 
 - Logic: `clientBaseShouldElevatePrimary` - TEXT/compressed when decoded; encrypted primary elevates when opt-in (cancel path can’t see portnum).

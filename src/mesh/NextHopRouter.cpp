@@ -3,6 +3,7 @@
 #include "MeshTypes.h"
 #include "Throttle.h"
 #include "UptimeClock.h"
+#include "mesh/ClientBaseHop.h"
 #include "meshUtils.h"
 #if !MESHTASTIC_EXCLUDE_TRACEROUTE
 #include "modules/TraceRouteModule.h"
@@ -261,8 +262,16 @@ bool NextHopRouter::perhapsRebroadcast(const meshtastic_MeshPacket *p)
     if (p->to == NODENUM_BROADCAST_NO_LORA)
         return false;
 
-    // Allow rebroadcast if hop_limit > 0 OR if we're exhausting hops (which sets hop_limit = 0 but still needs one relay)
-    if (!isToUs(p) && !isFromUs(p) && (p->hop_limit > 0 || exhaustHops)) {
+    const bool localClientBase = config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE;
+    const bool fromFavorite = nodeDB && nodeDB->isFavorite(getFrom(p));
+    const bool toFavorite = nodeDB && !isBroadcast(p->to) && nodeDB->isFavorite(p->to);
+    const ClientBaseRelayHop cbHop =
+        clientBaseClassifyRelayHop(localClientBase, fromFavorite, toFavorite, getHopsAway(*p), p->hop_limit);
+
+    // hop_limit > 0, TMM exhaust, or CLIENT_BASE L1.5 (free-hop / last-meter) for favorites.
+    const bool mayRelay = p->hop_limit > 0 || exhaustHops || cbHop == ClientBaseRelayHop::DeliverAtZero ||
+                          cbHop == ClientBaseRelayHop::FreeHopBumpStart;
+    if (!isToUs(p) && !isFromUs(p) && mayRelay) {
         if (p->id != 0) {
             if (isRebroadcaster()) {
                 // NOTE: this is a self-identity match (is the addressed next_hop OUR last byte?), so it
@@ -280,6 +289,16 @@ bool NextHopRouter::perhapsRebroadcast(const meshtastic_MeshPacket *p)
                     if (exhaustHops) {
                         tosend->hop_limit = 0;
                         LOG_INFO("Traffic management: exhaust hops for 0x%08x, hop_limit=0", getFrom(p));
+                    } else if (cbHop == ClientBaseRelayHop::FreeHopBumpStart) {
+                        // L1.5 / #8366: keep hop_limit, bump hop_start so travel count stays honest
+                        // and another CLIENT_BASE won't see hop_start==hop_limit as "direct from fav".
+                        if (tosend->hop_start < HOP_MAX)
+                            tosend->hop_start++;
+                        LOG_INFO("CLIENT_BASE L1.5 free hop from favorite: hop_start=%u hop_limit=%u", tosend->hop_start,
+                                 tosend->hop_limit);
+                    } else if (cbHop == ClientBaseRelayHop::DeliverAtZero) {
+                        tosend->hop_limit = 0;
+                        LOG_INFO("CLIENT_BASE L1.5 last-meter delivery hop_limit=0");
                     } else if (shouldDecrementHopLimit(p)) {
                         // Use shared logic to determine if hop_limit should be decremented
                         tosend->hop_limit--; // bump down the hop count

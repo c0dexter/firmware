@@ -30,15 +30,10 @@
 - [ ] M2 protobuf config key + app surface (persist)
 - [ ] Caps + honest primary opt-in docs; PR-ready
 
-## Adjacent (not blocking L2; do after module or with M2)
+## Adjacent (not blocking L2)
 
-- [ ] **L1.5 free-hop for favorites** - dom→dach nie powinien zjadać skoku z budżetu mesh (#8366)
-  - Today: `Router::shouldDecrementHopLimit` - first hop always decrement; preserve only when previous relay is unambiguous favorite ROUTER / ROUTER_LATE / CLIENT_BASE
-  - Desired: when local is `CLIENT_BASE` and packet is from / via a **favorite household CLIENT**, consider not burning that hop (or equivalent scoped rule)
-  - Fits our ACL story (favorites = served household); not attic=ROUTER
-  - Design gate: loop / infinite hop-preserve safety (why first-hop always decrements today)
-  - Tests: Unity around `shouldDecrementHopLimit` + CLIENT_BASE + favorite CLIENT cases
-  - Track: `UPSTREAM_WATCH.md` P2; notes in KB
+- [x] **L1.5 free-hop for favorites** - `ClientBaseHop.h` + NextHopRouter; Unity `test_client_base_l15_hop` (#8366)
+- [ ] L1.5 field check with P5 hardware smoke (dom→dach hop_start bump)
 
 ## FVP (later)
 

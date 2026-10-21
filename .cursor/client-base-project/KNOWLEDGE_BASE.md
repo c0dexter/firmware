@@ -1,6 +1,6 @@
 # Knowledge base - CLIENT_BASE project
 
-_Last updated: 2026-10-21 (L1.5 free-hop backlog + upstream watch)_
+_Last updated: 2026-10-21 (L1.5 free-hop shipped)_
 
 Canonical long-form analysis: **[ANALYSIS_AND_SIMULATION.md](ANALYSIS_AND_SIMULATION.md)**.  
 Work log: **[JOURNAL.md](JOURNAL.md)**. Execution plan: **[L2_PLAN.md](L2_PLAN.md)**.  
@@ -75,7 +75,15 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 
 - Caps: `CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS`; module stats enqueued/pulled/busy/rejected (no INFO on ingest hot path).
 - Docs: `schemas.md` S&F poll sequence; UC5/UC6; L2_PLAN DoD checked (stretch = hardware smoke).
-- Next: **P5 hardware smoke** / M2 / L1.5.
+- Next: **P5 hardware smoke** / M2 protobuf persist / L2-P4 nRF.
+
+### L1.5 free-hop (current)
+
+- `ClientBaseHop.h` - `clientBaseClassifyRelayHop`: FreeHopBumpStart (direct from favorite), DeliverAtZero (hop_limit==0 to/from favorite), else NormalDecrement.
+- `NextHopRouter::perhapsRebroadcast` - mayRelay includes L1.5; FreeHop bumps `hop_start` (keep `hop_limit`); DeliverAtZero TX at 0.
+- Loop safety: FreeHop only when `hopsAway==0`; after bump, next CLIENT_BASE sees hopsAway≥1 → NormalDecrement (no attic chain inventing budget).
+- Unity `test_client_base_l15_hop`.
+- Distinct from `shouldDecrementHopLimit` favorite-ROUTER preserve (still used on NormalDecrement path).
 
 ## Simulation summary (pointer)
 
@@ -99,15 +107,13 @@ Details and tables: `ANALYSIS_AND_SIMULATION.md` §9.
 - Upstream PRs: consider omitting `.cursor/` if reviewers prefer; keep on fork.
 - **Upstream L1 overlap:** #12156 / PR **#12180** (all-broadcast fill-in if direct favorite) vs our secondary-only L1 - reconcile on resume (`UPSTREAM_WATCH.md`).
 - **2.9 / 3.0:** #9942 roles; #10042 packet structure - watch, not L2 blockers.
-- **L1.5 free-hop (#8366):** exact heuristic so favorite CLIENT → `CLIENT_BASE` does not burn `hop_limit`, without reopening hop-preserve loops (first hop always decrements today). Backlog - not locked policy yet.
+- ~~**L1.5 free-hop (#8366)**~~ → shipped (see Findings). Field-validate on hardware with P5.
 
-## Findings (hops / free-hop - backlog L1.5)
+## Findings (hops / free-hop - L1.5)
 
-- User ask (2026-10-21): household favorites should get a “free” hop via roof `CLIENT_BASE` so **dom→dach** does not consume mesh hop budget.
-- Code today (`Router::shouldDecrementHopLimit`): (1) `getHopsAway==0` → always decrement; (2) preserve only if local is ROUTER/ROUTER_LATE/CLIENT_BASE **and** previous relay resolves to unique favorite ROUTER/ROUTER_LATE/CLIENT_BASE.
-- Gap: typical home node is **CLIENT** favorite → roof still burns a hop. Aligns with upstream [#8366](https://github.com/meshtastic/firmware/issues/8366).
-- Distinct from #12156 “0-hop late fill-in” (local spillover-limited TX) and from L2 poll answers (`hop_limit=0` local unicast).
-- Why it fits us: same favorites ACL as L1/L2; scoped to served household, not public amplify. Schedule after L2 module / with M2.
+- User ask (2026-10-21): household favorites get a “free” hop via roof `CLIENT_BASE` so **dom→dach** does not consume mesh hop budget (#8366).
+- Pre-L1.5 gap: `shouldDecrementHopLimit` always −1 at hopsAway==0; preserve only favorite ROUTER/CLIENT_BASE peers - favorite **CLIENT** still burned a hop.
+- Shipped heuristic: FreeHopBumpStart + DeliverAtZero in `ClientBaseHop.h` / `NextHopRouter` (see L1.5 findings above). Not public amplify: favorites ACL only.
 
 ## Upstream baseline (2026-10-21)
 

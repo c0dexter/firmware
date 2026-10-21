@@ -4,8 +4,8 @@ Working design hub for the `feature/client-base-role-improvements` branch on for
 
 This folder is the **project knowledge plane** (not upstream Meshtastic docs). It must stay current while we develop. Upstream documentation will later be distilled into the PR description and [meshtastic/meshtastic](https://github.com/meshtastic/meshtastic) if/when upstreamed.
 
-**Current snapshot:** **[STATUS.md](STATUS.md)** - L1 + L2 MVP + **M2 runtime opt-in**; D1=A locked.  
-**Next work:** hardware smoke (P5) / L1.5 / protobuf persist - see STATUS.  
+**Current snapshot:** **[STATUS.md](STATUS.md)** - L1 + L2 MVP + M2 + **L1.5 free-hop**; D1=A locked.  
+**Next work:** hardware smoke (P5) / protobuf persist - see STATUS.  
 **Upstream alignment:** **[ALIGNMENT_WITH_UPSTREAM.md](ALIGNMENT_WITH_UPSTREAM.md)** (nasze vs #12180 / #10704 - ryzyko review).
 
 ## Goal
@@ -29,12 +29,12 @@ Scripts: `sim_abstract.py`, `sim_variants.py`, `sim_platform_storage.py` (MEM_CL
 
 ## Layers
 
-| Layer | Name          | MVP?    | Intent                                                                              |
-| ----- | ------------- | ------- | ----------------------------------------------------------------------------------- |
-| L1    | Live bridge   | Yes     | Secondary (default): home hears private traffic the roof got; no CLIENT cancel race |
-| L2    | Secretary     | Yes     | Buffer those secondaries; on-demand unicast to favorites                            |
-| L3    | Peer catch-up | FVP     | After roof TTL - app BT/Wi‑Fi sync first; LoRa peer optional                        |
-| L1.5  | Free-hop      | Backlog | Favorite CLIENT → roof `CLIENT_BASE` nie pali skoku (#8366) - po L2 module          |
+| Layer | Name          | MVP?    | Intent                                                                                        |
+| ----- | ------------- | ------- | --------------------------------------------------------------------------------------------- |
+| L1    | Live bridge   | Yes     | Secondary (default): home hears private traffic the roof got; no CLIENT cancel race           |
+| L2    | Secretary     | Yes     | Buffer those secondaries; on-demand unicast to favorites                                      |
+| L3    | Peer catch-up | FVP     | After roof TTL - app BT/Wi‑Fi sync first; LoRa peer optional                                  |
+| L1.5  | Free-hop      | Shipped | Favorite CLIENT → roof `CLIENT_BASE` nie pali skoku (#8366); Unity `test_client_base_l15_hop` |
 
 ## MVP vs FVP
 
@@ -44,7 +44,7 @@ See **[MVP_AND_FVP.md](MVP_AND_FVP.md)**. Journal: **[JOURNAL.md](JOURNAL.md)**.
 | --------- | ------------------------------------------------------------------ | ------------------------------------------------------------ |
 | Meaning   | Smallest safe fix of the role promise                              | Full household-secretary product                             |
 | Must have | L1 secondary + L2 cursors/TTL + caps + tests                       | MVP + app UX + hardening + L3 catch-up + field/upstream docs |
-| Status    | **L1 closed**. L2 store done. **L2 module paused** (see STATUS.md) | After MVP: F1→F7 in `MVP_AND_FVP.md`                         |
+| Status    | **L1 + L2 module + M2 + L1.5** on fork (see STATUS.md); P5 HW open | After MVP: F1→F7 in `MVP_AND_FVP.md`                         |
 
 ## Non-goals (MVP)
 

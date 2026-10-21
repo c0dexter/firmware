@@ -12,7 +12,7 @@ Sync manually with GitHub Project when available.
 - [ ] GitHub Project board + columns
 - [x] MVP_AND_FVP.md written
 - [x] M2: opt-in primary TEXT elevate (runtime default off; protobuf persist later)
-- [ ] **L1.5 / free-hop:** `CLIENT_BASE` nie pali `hop_limit` dla ulubionych CLIENT (dom→dach→mesh); dziś `shouldDecrementHopLimit` chroni tylko favorite ROUTER/CLIENT_BASE + first hop zawsze −1 - [#8366](https://github.com/meshtastic/firmware/issues/8366); po L2 module / obok M2; ostrożnie z pętlami
+- [x] **L1.5 / free-hop:** FreeHopBumpStart + DeliverAtZero (`ClientBaseHop.h` / NextHopRouter); Unity `test_client_base_l15_hop` - [#8366](https://github.com/meshtastic/firmware/issues/8366)
 
 ## Todo (MVP)
 
@@ -45,6 +45,7 @@ Sync manually with GitHub Project when available.
 - [x] Native tests green for L1 (`test_client_base_l1`, coverage env, 8/8 incl. wire-hash fix)
 - [x] Post-change sims re-run + L1 cancel-path code review
 - [x] Native tests for cursor/TTL (L2 store) - `test_client_base_l2_store` 7/7
+- [x] Native tests L1.5 - `test_client_base_l15_hop` 8/8; nexthop + L1 regression green
 - [x] Upstream watch: 2.8 #12180 / 2.9 roles / 3.0 packet - `UPSTREAM_WATCH.md`
 - [ ] On resume: rebase `develop` + reconcile L1 vs PR #12180
 - [ ] Performance notes recorded (hot path, flash wear)

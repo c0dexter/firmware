@@ -1,6 +1,6 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-21 - L2 MVP + M2 runtime opt-in; stretch = hardware / protobuf persist_
+_Last updated: 2026-10-21 - L2 MVP + M2 + L1.5; stretch = hardware / protobuf persist_
 
 ## Branch / remote
 
@@ -21,18 +21,18 @@ _Last updated: 2026-10-21 - L2 MVP + M2 runtime opt-in; stretch = hardware / pro
 | **L2-P2**    | Poll session + S&F CLIENT_HISTORY dump; Unity `test_client_base_l2_poll` 6/6                                       | `70c07d09a`                                |
 | **L2-P3**    | Caps constant + stats + schemas/UC/DoD polish                                                                      | `d697af008`                                |
 | **M2**       | Primary elevate opt-in (runtime, default off); Unity L1 13/13; protobuf persist deferred                           | `cbeecd28f`                                |
+| **L1.5**     | Free-hop / last-meter for favorites (`ClientBaseHop.h` + NextHopRouter); Unity `test_client_base_l15_hop` 8/8      | (this commit)                              |
 | Docs/policy  | Analysis, sims, MVP/FVP, KB, journal; **D1=A** locked                                                              | `df318f8fb` + follow-ups                   |
 
 ## Next
 
 1. **L2-P5** hardware smoke (operator + MCP) when devices available
-2. Optional: M2 protobuf config key; L1.5 free-hop; L2-P4 nRF flash
+2. Optional: M2 protobuf config key; L2-P4 nRF flash
 3. Upstream PR (omit `.cursor/` if reviewers prefer)
 
 ## Explicitly not started
 
 - Client app UX for poll
-- **L1.5 free-hop** (#8366) - backlog
 - L3 peer / phone BT sync
 - Upstream PR to `meshtastic/firmware`
 
