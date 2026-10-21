@@ -73,12 +73,14 @@ Details and tables: `ANALYSIS_AND_SIMULATION.md` §9.
 - Exact config key name for primary TEXT opt-in.
 - GitHub Project board ID after `gh auth login`.
 - Upstream PRs: consider omitting `.cursor/` if reviewers prefer; keep on fork.
-- **3.0 / roles:** watch #9942 (role reduction; CLIENT_BASE kept in proposal) and #10042 (packet structure) - see `UPSTREAM_WATCH.md`. Not a L2 blocker today.
+- **Upstream L1 overlap:** #12156 / PR **#12180** (all-broadcast fill-in if direct favorite) vs our secondary-only L1 - reconcile on resume (`UPSTREAM_WATCH.md`).
+- **2.9 / 3.0:** #9942 roles; #10042 packet structure - watch, not L2 blockers.
 
 ## Upstream baseline (2026-10-21)
 
-- Working on **2.8.1-line / `develop`** (~2 commits behind `origin/develop` at check). Latest release stream: **2.8.1 Alpha**.
-- **3.0** = labeled future major (breaking cluster); no ship date. May affect packet headers and role naming; household-base _behavior_ still the right product bet.
+- Working on **2.8.1-line / `develop`**. Latest release: **2.8.1 Alpha**.
+- Competing UC1 fix: open **PR #12180** (~2.8.3). Locked default stays secondary-scoped until we deliberately change policy after rebase/compare.
+- **2.9** label thin (#9942, #8347). **3.0** = future major; no ship date.
 
 ## Rejected / deferred
 

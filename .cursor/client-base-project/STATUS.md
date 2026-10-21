@@ -35,12 +35,15 @@ Follow **[L2_PLAN.md](L2_PLAN.md)** in order:
 
 ## Upstream baseline
 
-See **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)** - building on **2.8.1 / `develop`** (~current); **3.0** is future labeled work (roles/packets to watch), not a ship blocker for L2.
+See **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
+
+- Build on **2.8.1 / `develop`**.
+- **Before next L1 code:** open PR [#12180](https://github.com/meshtastic/firmware/pull/12180) (broadcast fill-in ~2.8.3) - reconcile with our secondary-scoped L1.
+- **2.9 / 3.0:** #9942 roles, #10042 packets - watch; L2 secretary still distinct (#10704).
 
 ## Resume checklist
 
-1. **[L2_PLAN.md](L2_PLAN.md)** (execution plan)
-2. This file + `JOURNAL.md` (top)
-3. `KNOWLEDGE_BASE.md` § L1 / L2
+1. Check #12180 merge state + rebase `develop`
+2. **[L2_PLAN.md](L2_PLAN.md)** / **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**
+3. This file + `JOURNAL.md` (top)
 4. Skill: `.cursor/skills/client-base-secretary/SKILL.md`
-5. KANBAN **In progress** / TODO L2 lines
