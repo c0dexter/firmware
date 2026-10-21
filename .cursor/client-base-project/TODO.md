@@ -16,7 +16,7 @@
 - [x] Abstract + multi-variant + platform sims; policy lock
 - [x] Define MVP vs FVP in docs
 - [x] Unity tests: L1 secondary never-cancel + policy helpers (`test_client_base_l1`)
-- [x] Implement L1 + tests (FloodingRouter + Channels + ClientBaseRelay.h)
+- [x] Implement L1 + tests (FloodingRouter + Channels + ClientBaseRelay.h); wire-hash fix; milestone closed on fork
 - [x] L2 RAM store + cursors + TTL Unity (`ClientBaseSecretaryStore`)
 - [ ] L2 module: ingest secondary TEXT + poll/unicast + tests
 - [ ] L2 nRF flash backend (RAM ok for first ESP path)

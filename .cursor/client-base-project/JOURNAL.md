@@ -4,6 +4,17 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - L1 milestone closed
+
+L1 live bridge is complete on `feature/client-base-role-improvements` (fork):
+
+- `855871142` - secondary never-cancel + late window + Unity
+- `5b81c9b5c` - wire-hash fix on cancel path (8/8 tests)
+- Sims + code review: mesh wire-compatible (local TX policy only; no protobuf/role change)
+- M2 primary TEXT opt-in and L2 module/poll remain next MVP work (not L1)
+
+---
+
 ## 2026-10-21 - Post-change review: sims + L1 hash bug
 
 ### Sims re-run (unchanged conclusions)

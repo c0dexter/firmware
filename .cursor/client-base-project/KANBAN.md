@@ -53,5 +53,5 @@ Sync manually with GitHub Project when available.
 - [x] Docs updated: ANALYSIS_AND_SIMULATION.md + README/KB/use-cases/schemas/rules/skills sync
 - [x] Platform storage/dump sim (`sim_platform_storage.py`) + §9 in ANALYSIS
 - [x] Agent rules + skills + project knowledge plane bootstrap
-- [x] **L1 live bridge** - `ClientBaseRelay.h` + `isConfiguredSecondary` + FloodingRouter + Unity suite
+- [x] **L1 live bridge** - `ClientBaseRelay.h` + `isConfiguredSecondary` / `isPacketOnConfiguredSecondary` + FloodingRouter + Unity 8/8 (incl. wire-hash fix) - **milestone closed**
 - [x] **L2 store core** - `ClientBaseSecretaryStore` + Unity multi-reader/TTL

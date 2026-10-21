@@ -35,11 +35,11 @@ Scripts: `sim_abstract.py`, `sim_variants.py`, `sim_platform_storage.py` (MEM_CL
 
 See **[MVP_AND_FVP.md](MVP_AND_FVP.md)**. Journal: **[JOURNAL.md](JOURNAL.md)**.
 
-|           | MVP                                                    | FVP                                                          |
-| --------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-| Meaning   | Smallest safe fix of the role promise                  | Full household-secretary product                             |
-| Must have | L1 secondary + L2 cursors/TTL + caps + tests           | MVP + app UX + hardening + L3 catch-up + field/upstream docs |
-| Status    | **L1 done**; **L2 store core done**. Next: module/poll | After MVP: F1→F7 in `MVP_AND_FVP.md`                         |
+|           | MVP                                                                   | FVP                                                          |
+| --------- | --------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Meaning   | Smallest safe fix of the role promise                                 | Full household-secretary product                             |
+| Must have | L1 secondary + L2 cursors/TTL + caps + tests                          | MVP + app UX + hardening + L3 catch-up + field/upstream docs |
+| Status    | **L1 closed** (on fork). **L2 store core** done. Next: L2 module/poll | After MVP: F1→F7 in `MVP_AND_FVP.md`                         |
 
 ## Non-goals (MVP)
 
