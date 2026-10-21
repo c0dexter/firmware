@@ -1,19 +1,43 @@
 #pragma once
 
 #include "MeshTypes.h"
+#include "mesh/generated/meshtastic/mesh.pb.h"
 
 /**
- * CLIENT_BASE L1: return true if we may cancel a queued rebroadcast after hearing a dupe.
- * Protected (never cancel) when from/to is a served favorite OR the packet is on a
- * configured secondary channel held by this base.
+ * CLIENT_BASE L1 live-bridge helpers (testable, no flash I/O).
+ *
+ * Protected (never cancel / late window) when:
+ * - from/to is a served favorite, OR
+ * - packet is on a configured secondary, OR
+ * - M2 opt-in elevates this primary packet (see clientBaseShouldElevatePrimary).
  */
-inline bool clientBaseAllowsCancelingDupe(bool fromOrToFavorite, bool onConfiguredSecondary)
+
+/** M2: opt-in primary elevate. Encrypted primary must elevate (portnum unknown pre-decode). */
+inline bool clientBaseShouldElevatePrimary(bool optInEnabled, bool onConfiguredPrimary, bool isDecoded,
+                                           meshtastic_PortNum portnum)
 {
-    return !(fromOrToFavorite || onConfiguredSecondary);
+    if (!optInEnabled || !onConfiguredPrimary) {
+        return false;
+    }
+    if (!isDecoded) {
+        return true;
+    }
+    return portnum == meshtastic_PortNum_TEXT_MESSAGE_APP || portnum == meshtastic_PortNum_TEXT_MESSAGE_COMPRESSED_APP;
 }
 
-/** True when CLIENT_BASE should use ROUTER_LATE-style late rebroadcast window for this packet. */
-inline bool clientBaseUsesLateRebroadcastWindow(bool fromOrToFavorite, bool onConfiguredSecondary)
+inline bool clientBaseAllowsCancelingDupe(bool fromOrToFavorite, bool onConfiguredSecondary, bool elevatePrimary)
 {
-    return fromOrToFavorite || onConfiguredSecondary;
+    return !(fromOrToFavorite || onConfiguredSecondary || elevatePrimary);
 }
+
+inline bool clientBaseUsesLateRebroadcastWindow(bool fromOrToFavorite, bool onConfiguredSecondary, bool elevatePrimary)
+{
+    return fromOrToFavorite || onConfiguredSecondary || elevatePrimary;
+}
+
+/**
+ * Runtime M2 flag (default off). Full protobuf config deferred - needs protobufs PR.
+ * Tests / future admin path call setter; firmware defaults false (UC2 honest).
+ */
+bool clientBaseGetElevatePrimaryOptIn();
+void clientBaseSetElevatePrimaryOptIn(bool enabled);

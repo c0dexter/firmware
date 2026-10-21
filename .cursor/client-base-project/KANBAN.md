@@ -11,7 +11,7 @@ Sync manually with GitHub Project when available.
 - [x] L2 RAM storage API (`ClientBaseSecretaryStore`); nRF flash spill still open (L2-P4)
 - [ ] GitHub Project board + columns
 - [x] MVP_AND_FVP.md written
-- [ ] M2: opt-in primary TEXT config (default off)
+- [x] M2: opt-in primary TEXT elevate (runtime default off; protobuf persist later)
 - [ ] **L1.5 / free-hop:** `CLIENT_BASE` nie pali `hop_limit` dla ulubionych CLIENT (dom→dach→mesh); dziś `shouldDecrementHopLimit` chroni tylko favorite ROUTER/CLIENT_BASE + first hop zawsze −1 - [#8366](https://github.com/meshtastic/firmware/issues/8366); po L2 module / obok M2; ostrożnie z pętlami
 
 ## Todo (MVP)

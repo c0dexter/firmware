@@ -26,7 +26,8 @@
 - [x] L2-P3: caps/docs/stats/schema polish
 - [ ] L2-P5: hardware smoke UC6 (stretch)
 - [ ] L2 nRF flash backend (RAM ok for first ESP path)
-- [ ] M2 opt-in primary TEXT config (default off)
+- [x] M2 opt-in primary TEXT elevate (runtime; default off)
+- [ ] M2 protobuf config key + app surface (persist)
 - [ ] Caps + honest primary opt-in docs; PR-ready
 
 ## Adjacent (not blocking L2; do after module or with M2)

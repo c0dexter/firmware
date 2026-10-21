@@ -94,10 +94,16 @@ class Channels
     // Used by CLIENT_BASE L1 live-bridge: never-cancel rebroadcast on secondaries the base holds.
     bool isConfiguredSecondary(ChannelIndex chIndex);
 
+    // True when this index is the configured PRIMARY with settings.
+    bool isConfiguredPrimary(ChannelIndex chIndex);
+
     // CLIENT_BASE L1: true if this packet is on a configured SECONDARY we hold.
     // Handles both post-decode packets (channel = index) and pre-decode cancel-on-dupe
     // (channel still = wire hash). Calling isConfiguredSecondary(p.channel) on a hash is wrong.
     bool isPacketOnConfiguredSecondary(const meshtastic_MeshPacket &p);
+
+    // Same hash/index handling for PRIMARY (M2 primary elevate).
+    bool isPacketOnConfiguredPrimary(const meshtastic_MeshPacket &p);
 
     // Returns true if this channel's effective key is publicly decryptable (open or well-known/default PSK).
     bool usesPublicKey(ChannelIndex chIndex);

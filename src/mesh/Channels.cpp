@@ -461,6 +461,14 @@ bool Channels::isConfiguredSecondary(ChannelIndex chIndex)
     return ch.has_settings && ch.role == meshtastic_Channel_Role_SECONDARY;
 }
 
+bool Channels::isConfiguredPrimary(ChannelIndex chIndex)
+{
+    if (chIndex >= getNumChannels())
+        return false;
+    const meshtastic_Channel &ch = getByIndex(chIndex);
+    return ch.has_settings && ch.role == meshtastic_Channel_Role_PRIMARY;
+}
+
 int8_t Channels::getIndexByHash(ChannelHash channelHash)
 {
     for (ChannelIndex i = 0; i < getNumChannels(); i++) {
@@ -481,6 +489,17 @@ bool Channels::isPacketOnConfiguredSecondary(const meshtastic_MeshPacket &p)
     if (idx < 0)
         return false;
     return isConfiguredSecondary(static_cast<ChannelIndex>(idx));
+}
+
+bool Channels::isPacketOnConfiguredPrimary(const meshtastic_MeshPacket &p)
+{
+    if (p.which_payload_variant == meshtastic_MeshPacket_decoded_tag)
+        return isConfiguredPrimary(static_cast<ChannelIndex>(p.channel));
+
+    const int8_t idx = getIndexByHash(static_cast<ChannelHash>(p.channel));
+    if (idx < 0)
+        return false;
+    return isConfiguredPrimary(static_cast<ChannelIndex>(idx));
 }
 
 bool cryptoKeyIsPublic(const CryptoKey &key)

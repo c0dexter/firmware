@@ -1,7 +1,7 @@
 // CLIENT_BASE L1 live bridge: never-cancel on configured SECONDARY channels;
-// primary stays CLIENT-like (cancel allowed) unless a later opt-in elevates TEXT.
+// primary stays CLIENT-like unless M2 opt-in elevates primary TEXT.
 //
-// Pins Channels::isConfiguredSecondary and ClientBaseRelay.h decision helpers used by
+// Pins Channels helpers and ClientBaseRelay.h decisions used by
 // FloodingRouter::roleAllowsCancelingDupe / perhapsCancelDupe.
 //
 // Regression: without secondary protection, cancel-on-dupe + hidden terminal starves
@@ -25,7 +25,7 @@ static void installSecondaryAt(ChannelIndex idx, const char *name)
     ch.settings.psk.size = 1;
     ch.settings.psk.bytes[0] = 2;
     channels.setChannel(ch);
-    channels.fixupChannel(idx); // refresh hashes[] used by wire-hash → index lookup
+    channels.fixupChannel(idx);
 }
 
 void setUp(void)
@@ -33,13 +33,18 @@ void setUp(void)
     memset(&channelFile, 0, sizeof(channelFile));
     channels.initDefaults();
     config.device.role = meshtastic_Config_DeviceConfig_Role_CLIENT_BASE;
+    clientBaseSetElevatePrimaryOptIn(false);
 }
 
-void tearDown(void) {}
+void tearDown(void)
+{
+    clientBaseSetElevatePrimaryOptIn(false);
+}
 
 static void test_primary_is_not_configured_secondary(void)
 {
     TEST_ASSERT_FALSE(channels.isConfiguredSecondary(0));
+    TEST_ASSERT_TRUE(channels.isConfiguredPrimary(0));
     TEST_ASSERT_EQUAL(meshtastic_Channel_Role_PRIMARY, channels.getByIndex(0).role);
 }
 
@@ -57,20 +62,20 @@ static void test_secondary_with_settings_is_configured(void)
 
 static void test_policy_primary_allows_cancel(void)
 {
-    TEST_ASSERT_TRUE(clientBaseAllowsCancelingDupe(/*fav=*/false, /*secondary=*/false));
-    TEST_ASSERT_FALSE(clientBaseUsesLateRebroadcastWindow(false, false));
+    TEST_ASSERT_TRUE(clientBaseAllowsCancelingDupe(false, false, false));
+    TEST_ASSERT_FALSE(clientBaseUsesLateRebroadcastWindow(false, false, false));
 }
 
 static void test_policy_secondary_never_cancels(void)
 {
-    TEST_ASSERT_FALSE(clientBaseAllowsCancelingDupe(false, true));
-    TEST_ASSERT_TRUE(clientBaseUsesLateRebroadcastWindow(false, true));
+    TEST_ASSERT_FALSE(clientBaseAllowsCancelingDupe(false, true, false));
+    TEST_ASSERT_TRUE(clientBaseUsesLateRebroadcastWindow(false, true, false));
 }
 
 static void test_policy_favorite_never_cancels_even_on_primary(void)
 {
-    TEST_ASSERT_FALSE(clientBaseAllowsCancelingDupe(true, false));
-    TEST_ASSERT_TRUE(clientBaseUsesLateRebroadcastWindow(true, false));
+    TEST_ASSERT_FALSE(clientBaseAllowsCancelingDupe(true, false, false));
+    TEST_ASSERT_TRUE(clientBaseUsesLateRebroadcastWindow(true, false, false));
 }
 
 static void test_integration_secondary_channel_feeds_policy(void)
@@ -80,13 +85,10 @@ static void test_integration_secondary_channel_feeds_policy(void)
     const bool pri = channels.isConfiguredSecondary(0);
     TEST_ASSERT_TRUE(sec);
     TEST_ASSERT_FALSE(pri);
-    TEST_ASSERT_FALSE(clientBaseAllowsCancelingDupe(false, sec));
-    TEST_ASSERT_TRUE(clientBaseAllowsCancelingDupe(false, pri));
+    TEST_ASSERT_FALSE(clientBaseAllowsCancelingDupe(false, sec, false));
+    TEST_ASSERT_TRUE(clientBaseAllowsCancelingDupe(false, pri, false));
 }
 
-// Regression: FloodingRouter::perhapsCancelDupe runs before perhapsDecode, so
-// MeshPacket.channel is still the wire hash - not a ChannelIndex. Treating the
-// hash as an index made L1 secondary never-cancel a no-op for most hashes.
 static void test_packet_on_secondary_resolves_wire_hash(void)
 {
     installSecondaryAt(1, "CHAT");
@@ -103,13 +105,51 @@ static void test_packet_on_secondary_resolves_wire_hash(void)
     decoded.channel = 1;
     TEST_ASSERT_TRUE(channels.isPacketOnConfiguredSecondary(decoded));
 
-    decoded.channel = 0; // primary index after decode
+    decoded.channel = 0;
     TEST_ASSERT_FALSE(channels.isPacketOnConfiguredSecondary(decoded));
+    TEST_ASSERT_TRUE(channels.isPacketOnConfiguredPrimary(decoded));
 
-    // Bug pattern: using raw hash as index (e.g. hash 200) must not spuriously match.
     enc.channel = 200;
     if (channels.getHash(1) != 200)
         TEST_ASSERT_FALSE(channels.isPacketOnConfiguredSecondary(enc));
+}
+
+// M2 / UC2: default opt-in off → primary not elevated.
+static void test_m2_default_off_primary_not_elevated(void)
+{
+    TEST_ASSERT_FALSE(clientBaseGetElevatePrimaryOptIn());
+    TEST_ASSERT_FALSE(clientBaseShouldElevatePrimary(false, true, true, meshtastic_PortNum_TEXT_MESSAGE_APP));
+    TEST_ASSERT_TRUE(clientBaseAllowsCancelingDupe(false, false, false));
+}
+
+// M2 / UC3: opt-in + primary TEXT decoded → elevate.
+static void test_m2_opt_in_primary_text_elevates(void)
+{
+    TEST_ASSERT_TRUE(clientBaseShouldElevatePrimary(true, true, true, meshtastic_PortNum_TEXT_MESSAGE_APP));
+    TEST_ASSERT_TRUE(clientBaseShouldElevatePrimary(true, true, true, meshtastic_PortNum_TEXT_MESSAGE_COMPRESSED_APP));
+    TEST_ASSERT_FALSE(clientBaseAllowsCancelingDupe(false, false, true));
+    TEST_ASSERT_TRUE(clientBaseUsesLateRebroadcastWindow(false, false, true));
+}
+
+// M2: opt-in + decoded primary telemetry → do not elevate (TEXT-focused).
+static void test_m2_opt_in_primary_telemetry_not_elevated(void)
+{
+    TEST_ASSERT_FALSE(clientBaseShouldElevatePrimary(true, true, true, meshtastic_PortNum_TELEMETRY_APP));
+    TEST_ASSERT_FALSE(clientBaseShouldElevatePrimary(true, true, true, meshtastic_PortNum_POSITION_APP));
+}
+
+// M2: opt-in + encrypted primary → elevate (portnum unknown on cancel path).
+static void test_m2_opt_in_encrypted_primary_elevates(void)
+{
+    TEST_ASSERT_TRUE(clientBaseShouldElevatePrimary(true, true, false, meshtastic_PortNum_UNKNOWN_APP));
+}
+
+static void test_m2_opt_in_runtime_flag(void)
+{
+    clientBaseSetElevatePrimaryOptIn(true);
+    TEST_ASSERT_TRUE(clientBaseGetElevatePrimaryOptIn());
+    clientBaseSetElevatePrimaryOptIn(false);
+    TEST_ASSERT_FALSE(clientBaseGetElevatePrimaryOptIn());
 }
 
 void setup()
@@ -124,6 +164,11 @@ void setup()
     RUN_TEST(test_policy_favorite_never_cancels_even_on_primary);
     RUN_TEST(test_integration_secondary_channel_feeds_policy);
     RUN_TEST(test_packet_on_secondary_resolves_wire_hash);
+    RUN_TEST(test_m2_default_off_primary_not_elevated);
+    RUN_TEST(test_m2_opt_in_primary_text_elevates);
+    RUN_TEST(test_m2_opt_in_primary_telemetry_not_elevated);
+    RUN_TEST(test_m2_opt_in_encrypted_primary_elevates);
+    RUN_TEST(test_m2_opt_in_runtime_flag);
     exit(UNITY_END());
 }
 

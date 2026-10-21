@@ -126,10 +126,14 @@ bool FloodingRouter::roleAllowsCancelingDupe(const meshtastic_MeshPacket *p)
     }
 
     if (config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE) {
-        // L1: never cancel on configured SECONDARY; keep favorite from/to. Primary stays CLIENT-like.
-        // Use isPacketOnConfiguredSecondary: cancel-on-dupe runs pre-decode (channel = wire hash).
+        // L1: never cancel on configured SECONDARY; favorite from/to; M2 opt-in primary.
+        // Cancel-on-dupe often runs pre-decode (channel = wire hash; portnum unknown if encrypted).
         const bool fav = nodeDB && nodeDB->isFromOrToFavoritedNode(*p);
-        return clientBaseAllowsCancelingDupe(fav, channels.isPacketOnConfiguredSecondary(*p));
+        const bool decoded = p->which_payload_variant == meshtastic_MeshPacket_decoded_tag;
+        const bool elevatePrimary =
+            clientBaseShouldElevatePrimary(clientBaseGetElevatePrimaryOptIn(), channels.isPacketOnConfiguredPrimary(*p), decoded,
+                                           decoded ? p->decoded.portnum : meshtastic_PortNum_UNKNOWN_APP);
+        return clientBaseAllowsCancelingDupe(fav, channels.isPacketOnConfiguredSecondary(*p), elevatePrimary);
     }
 
     // All other roles (such as CLIENT) should cancel a rebroadcast if they hear another station's rebroadcast.
@@ -149,7 +153,11 @@ void FloodingRouter::perhapsCancelDupe(const meshtastic_MeshPacket *p)
     }
     if (config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE && iface) {
         const bool fav = nodeDB && nodeDB->isFromOrToFavoritedNode(*p);
-        if (clientBaseUsesLateRebroadcastWindow(fav, channels.isPacketOnConfiguredSecondary(*p)))
+        const bool decoded = p->which_payload_variant == meshtastic_MeshPacket_decoded_tag;
+        const bool elevatePrimary =
+            clientBaseShouldElevatePrimary(clientBaseGetElevatePrimaryOptIn(), channels.isPacketOnConfiguredPrimary(*p), decoded,
+                                           decoded ? p->decoded.portnum : meshtastic_PortNum_UNKNOWN_APP);
+        if (clientBaseUsesLateRebroadcastWindow(fav, channels.isPacketOnConfiguredSecondary(*p), elevatePrimary))
             iface->clampToLateRebroadcastWindow(getFrom(p), p->id);
     }
 }

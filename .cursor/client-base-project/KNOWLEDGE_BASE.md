@@ -13,7 +13,7 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 2. **Root user pain:** favorites elevate only `from`/`to`; channel broadcasts from the mesh are not elevated → roof phone sees messages, home often does not (cancel-on-dupe + hidden terminal) → operators install ROUTER/ROUTER_LATE.
 3. **L1 + L2 together:** live fix for in-range home; secretary for offline / missed window. L2 alone is insufficient.
 4. **L1 default (LOCKED):** late never-cancel only on **secondary channels configured on the base**. Wins multi-world system score; lowest public TX among effective fixes.
-5. **L1 opt-in (LOCKED):** config to also elevate **primary TEXT** - default **off**. Honest UX: without it, primary stays best-effort CLIENT-like. **Not wired yet** (M2).
+5. **L1 opt-in (LOCKED):** elevate **primary TEXT** - default **off**. Runtime wired (`clientBaseSetElevatePrimaryOptIn`); protobuf persist deferred. Encrypted primary elevates when opt-in (cancel path can’t see portnum); decoded non-TEXT primary does not.
 6. **L1 forbidden default (LOCKED):** never-cancel on all channels / stealth ROUTER_LATE.
 7. **L2 (LOCKED):** TEXT-focused buffer on those secondaries; shared ring; **per-favorite cursor**; TTL/ring eviction; **never purge-on-first-ACK**.
 8. **Platforms (LOCKED from `sim_platform_storage.py`):** LEAN 256 B records; nRF = flash+index (viable for 24h@4/h); ESP no-PSRAM RAM ring OK for 24h; ESP+PSRAM must cap for dump time; STM32WL = L2 excluded. Not a PSRAM-only global S&F clone.
@@ -38,9 +38,10 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 
 - `Channels::isConfiguredSecondary(idx)` - `has_settings` && role `SECONDARY`.
 - `Channels::isPacketOnConfiguredSecondary(p)` - **required** on cancel-on-dupe path: pre-decode `p.channel` is wire hash; post-decode it is index. (`getIndexByHash` now implemented.)
-- `ClientBaseRelay.h` - `clientBaseAllowsCancelingDupe(fav, secondary)` / `clientBaseUsesLateRebroadcastWindow(...)` (pure, testable).
-- `FloodingRouter`: CLIENT_BASE never-cancels and clamps late window when favorite **or** configured secondary; primary non-favorite still CLIENT cancel.
-- Tests: `test/test_client_base_l1/` - 8/8 (includes wire-hash regression).
+- `ClientBaseRelay.h` - cancel/late helpers + M2 `clientBaseShouldElevatePrimary` / runtime opt-in get/set.
+- `FloodingRouter`: never-cancel + late when favorite **or** secondary **or** M2 elevate-primary; default opt-in off.
+- `Channels`: `isPacketOnConfiguredPrimary` (hash-safe like secondary).
+- Tests: `test/test_client_base_l1/` - 13/13 (wire-hash + M2 matrix).
 
 ### Post-change review (2026-10-21)
 
@@ -93,7 +94,7 @@ Details and tables: `ANALYSIS_AND_SIMULATION.md` §9.
 
 - Exact numeric caps to ship: `history_return_max`, TTL, records per MEM_CLASS (sim suggests 24h@4/h feasible; dump cap e.g. 32-64 msg/session).
 - ~~Protobuf: extend StoreAndForward vs new private control messages~~ → **D1=A locked** (S&F RR reuse); revisit only if A proves too confusing.
-- Exact config key name for primary TEXT opt-in.
+- Exact protobuf config key name for primary TEXT opt-in (runtime flag exists; persist TBD).
 - GitHub Project board ID after `gh auth login`.
 - Upstream PRs: consider omitting `.cursor/` if reviewers prefer; keep on fork.
 - **Upstream L1 overlap:** #12156 / PR **#12180** (all-broadcast fill-in if direct favorite) vs our secondary-only L1 - reconcile on resume (`UPSTREAM_WATCH.md`).

@@ -4,6 +4,15 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - M2 primary elevate opt-in (runtime)
+
+- Logic: `clientBaseShouldElevatePrimary` - TEXT/compressed when decoded; encrypted primary elevates when opt-in (cancel path can’t see portnum).
+- Runtime flag `clientBaseSetElevatePrimaryOptIn` default **false** (UC2); protobuf persistence deferred.
+- Channels: `isConfiguredPrimary` / `isPacketOnConfiguredPrimary`; FloodingRouter wired.
+- Unity L1 extended with M2 cases.
+
+---
+
 ## 2026-10-21 - L2-P3 caps / observability / docs
 
 - D2 interval constant `CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS`; module stats enqueued/pulled/busy/rejected (no INFO on ingest hot path).
