@@ -7,8 +7,8 @@ Sync manually with GitHub Project when available.
 - [x] Lock L1 policy (advisor): default secondary-only late never-cancel; opt-in primary TEXT; never default L1-all
 - [x] Multi-variant sim (`sim_variants.py`) across 4 worlds + system score
 - [x] Abstract Monte Carlo sim (`sim_abstract.py`) + conclusions in KB
-- [ ] L2 protobuf / poll message sketch (MVP)
-- [x] L2 RAM storage API (`ClientBaseSecretaryStore`); nRF flash spill still open
+- [x] L2 execution plan written (`L2_PLAN.md`) - D1 protobuf still open at start of coding
+- [x] L2 RAM storage API (`ClientBaseSecretaryStore`); nRF flash spill still open (L2-P4)
 - [ ] GitHub Project board + columns
 - [x] MVP_AND_FVP.md written
 - [ ] M2: opt-in primary TEXT config (default off)
@@ -33,7 +33,7 @@ Sync manually with GitHub Project when available.
 
 ## In progress
 
-- [ ] ~~MVP L2 module + poll/unicast~~ → **PAUSED** (store core done; resume when operator free - see `STATUS.md`)
+- [ ] ~~MVP L2 module + poll/unicast~~ → **PAUSED** - resume via `L2_PLAN.md` / `STATUS.md`
 
 ## Verification
 

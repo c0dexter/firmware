@@ -1,14 +1,14 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-21 - session paused before L2 module work_
+_Last updated: 2026-10-21 - paused; L2 execution plan ready (`L2_PLAN.md`)_
 
 ## Branch / remote
 
-|                   |                                         |
-| ----------------- | --------------------------------------- |
-| Branch            | `feature/client-base-role-improvements` |
-| Fork tip (approx) | `0aaff8dae` (pause snapshot)            |
-| Push remote       | `fork` → `c0dexter/firmware`            |
+|                   |                                          |
+| ----------------- | ---------------------------------------- |
+| Branch            | `feature/client-base-role-improvements`  |
+| Fork tip (approx) | see `git log -1` on branch (plan commit) |
+| Push remote       | `fork` → `c0dexter/firmware`             |
 
 ## Done
 
@@ -20,24 +20,23 @@ _Last updated: 2026-10-21 - session paused before L2 module work_
 
 ## Paused / next when resuming
 
-1. **L2 module** - ingest secondary TEXT → store; favorites ACL; poll → unicast; Unity
-2. **Protobuf decision** - reuse StoreAndForward vs new messages (biggest schedule risk)
-3. Caps (`history_return_max`, max favorites)
-4. **M2** - opt-in primary TEXT (default off)
-5. nRF flash backend (after RAM path works)
-6. Hardware smoke UC1; PR polish
+Follow **[L2_PLAN.md](L2_PLAN.md)** in order:
 
-**FVP (F1-F7)** - after MVP only.
+1. Lock **D1** (S&F reuse vs new protobuf) + confirm **D2** caps
+2. L2-P0 module skeleton → L2-P1 ingest → L2-P2 poll/unicast → L2-P3 caps/docs
+3. Optional L2-P4 nRF flash, L2-P5 hardware smoke
+4. Later: M2 primary TEXT opt-in; FVP F1-F7
 
 ## Explicitly not started
 
-- L2 poll on-air / client apps
+- L2 module / on-air poll / client apps
 - L3 peer / phone BT sync
 - Upstream PR to `meshtastic/firmware`
 
 ## Resume checklist
 
-1. Read `JOURNAL.md` (top entries) + this file
-2. Read `KNOWLEDGE_BASE.md` § L1 / L2
-3. Skill: `.cursor/skills/client-base-secretary/SKILL.md`
-4. Continue from KANBAN **In progress** / TODO L2 module line
+1. **[L2_PLAN.md](L2_PLAN.md)** (execution plan)
+2. This file + `JOURNAL.md` (top)
+3. `KNOWLEDGE_BASE.md` § L1 / L2
+4. Skill: `.cursor/skills/client-base-secretary/SKILL.md`
+5. KANBAN **In progress** / TODO L2 lines

@@ -1,9 +1,9 @@
 # Knowledge base - CLIENT_BASE project
 
-_Last updated: 2026-10-21 (L1 closed; L2 store done; L2 module paused - see STATUS.md)_
+_Last updated: 2026-10-21 (L2_PLAN.md ready; module paused - see STATUS.md)_
 
 Canonical long-form analysis: **[ANALYSIS_AND_SIMULATION.md](ANALYSIS_AND_SIMULATION.md)**.  
-Work log: **[JOURNAL.md](JOURNAL.md)**.
+Work log: **[JOURNAL.md](JOURNAL.md)**. Execution plan: **[L2_PLAN.md](L2_PLAN.md)**.
 
 ## Decisions (accepted)
 
@@ -50,6 +50,7 @@ Work log: **[JOURNAL.md](JOURNAL.md)**.
 - `ClientBaseSecretaryStore` - calloc ring + fixed cursor slots; lean 256 B records; `push` / `expire` / `ensureFavorite` / `pullNext` (cursor-only advance).
 - Tests: `test/test_client_base_l2_store/` - 7/7 (multi-reader no purge, TTL, capacity, favorite cap).
 - Still open: ProtobufModule wiring, poll RR, unicast TX, flash spill for nRF, `history_return_max` session cap.
+- **Execution plan:** `L2_PLAN.md` (D1 protocol gate, phases P0-P5, caps proposal, DoD).
 
 ## Simulation summary (pointer)
 

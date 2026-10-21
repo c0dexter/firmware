@@ -4,7 +4,8 @@ Working design hub for the `feature/client-base-role-improvements` branch on for
 
 This folder is the **project knowledge plane** (not upstream Meshtastic docs). It must stay current while we develop. Upstream documentation will later be distilled into the PR description and [meshtastic/meshtastic](https://github.com/meshtastic/meshtastic) if/when upstreamed.
 
-**Current snapshot:** **[STATUS.md](STATUS.md)** - L1 closed; L2 store done; L2 module/poll **paused**.
+**Current snapshot:** **[STATUS.md](STATUS.md)** - L1 closed; L2 store done; L2 module/poll **paused**.  
+**Next work:** **[L2_PLAN.md](L2_PLAN.md)** (phased plan ready to execute).
 
 ## Goal
 
@@ -56,6 +57,7 @@ See **[MVP_AND_FVP.md](MVP_AND_FVP.md)**. Journal: **[JOURNAL.md](JOURNAL.md)**.
 | File                         | Purpose                                          |
 | ---------------------------- | ------------------------------------------------ |
 | `STATUS.md`                  | One-page current snapshot (start here on resume) |
+| `L2_PLAN.md`                 | Phased L2 secretary implementation plan          |
 | `ANALYSIS_AND_SIMULATION.md` | Problem analysis, sim results, locked policy     |
 | `MVP_AND_FVP.md`             | MVP scope, done criteria, FVP roadmap            |
 | `JOURNAL.md`                 | Append-only work log                             |

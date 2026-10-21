@@ -4,6 +4,14 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - L2 plan ready + pause
+
+Operator pause continues; execution plan written so coding can start cold.
+
+- **[L2_PLAN.md](L2_PLAN.md)** - D1/D2 decisions, phases P0-P5, files, tests, DoD, session order.
+- **[STATUS.md](STATUS.md)** - snapshot updated to point at the plan.
+- Resume: lock D1 → P0 skeleton → P1 ingest → P2 poll → P3 caps/docs.
+
 ## 2026-10-21 - Pause before L2 module
 
 Operator pause: L2 module/poll deferred until next free session.
