@@ -127,8 +127,9 @@ bool FloodingRouter::roleAllowsCancelingDupe(const meshtastic_MeshPacket *p)
 
     if (config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE) {
         // L1: never cancel on configured SECONDARY; keep favorite from/to. Primary stays CLIENT-like.
+        // Use isPacketOnConfiguredSecondary: cancel-on-dupe runs pre-decode (channel = wire hash).
         const bool fav = nodeDB && nodeDB->isFromOrToFavoritedNode(*p);
-        return clientBaseAllowsCancelingDupe(fav, channels.isConfiguredSecondary(p->channel));
+        return clientBaseAllowsCancelingDupe(fav, channels.isPacketOnConfiguredSecondary(*p));
     }
 
     // All other roles (such as CLIENT) should cancel a rebroadcast if they hear another station's rebroadcast.
@@ -148,7 +149,7 @@ void FloodingRouter::perhapsCancelDupe(const meshtastic_MeshPacket *p)
     }
     if (config.device.role == meshtastic_Config_DeviceConfig_Role_CLIENT_BASE && iface) {
         const bool fav = nodeDB && nodeDB->isFromOrToFavoritedNode(*p);
-        if (clientBaseUsesLateRebroadcastWindow(fav, channels.isConfiguredSecondary(p->channel)))
+        if (clientBaseUsesLateRebroadcastWindow(fav, channels.isPacketOnConfiguredSecondary(*p)))
             iface->clampToLateRebroadcastWindow(getFrom(p), p->id);
     }
 }

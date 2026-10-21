@@ -35,9 +35,15 @@ Work log: **[JOURNAL.md](JOURNAL.md)**.
 ### L1 implementation (current)
 
 - `Channels::isConfiguredSecondary(idx)` - `has_settings` && role `SECONDARY`.
+- `Channels::isPacketOnConfiguredSecondary(p)` - **required** on cancel-on-dupe path: pre-decode `p.channel` is wire hash; post-decode it is index. (`getIndexByHash` now implemented.)
 - `ClientBaseRelay.h` - `clientBaseAllowsCancelingDupe(fav, secondary)` / `clientBaseUsesLateRebroadcastWindow(...)` (pure, testable).
 - `FloodingRouter`: CLIENT_BASE never-cancels and clamps late window when favorite **or** configured secondary; primary non-favorite still CLIENT cancel.
-- Tests: `test/test_client_base_l1/` - 7/7 green on `coverage` (host may need Dockerfile.test packages or `.local-deps`).
+- Tests: `test/test_client_base_l1/` - 8/8 (includes wire-hash regression).
+
+### Post-change review (2026-10-21)
+
+- Sims re-run: policy lock still holds (`l1_secondary_only` aggregate winner).
+- Caught and fixed hash-vs-index bug on L1 cancel path (see JOURNAL).
 
 ### L2 store core (current)
 

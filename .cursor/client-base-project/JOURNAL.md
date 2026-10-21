@@ -4,6 +4,25 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - Post-change review: sims + L1 hash bug
+
+### Sims re-run (unchanged conclusions)
+
+- `sim_abstract` / `sim_variants` / `sim_platform_storage`: aggregate winner still **l1_secondary_only**; secondary airtime ~60 TX/100; L1-all ≈ ROUTER; L2 cursors / purge-on-ACK contrast holds; lean 256 B still fits 24h on nRF/ESP.
+
+### Code review finding (fixed)
+
+- **Bug:** `FloodingRouter::perhapsCancelDupe` runs in `shouldFilterReceived` **before** `perhapsDecode`. On that path `MeshPacket.channel` is still the **wire hash**, not a `ChannelIndex`.
+- Using `isConfiguredSecondary(p->channel)` treated hash bytes as indices → for most hashes (`>= numChannels`) L1 secondary never-cancel was a **no-op**. Favorites path was unaffected.
+- **Fix:** `Channels::isPacketOnConfiguredSecondary` (+ implement missing `getIndexByHash`); FloodingRouter uses it. Regression test `test_packet_on_secondary_resolves_wire_hash` - L1 suite **8/8 PASS**.
+
+### L2 store notes (no code change)
+
+- `nextSeq_` uint32 wrap after ~4e9 pushes would break seq arithmetic (not MVP-relevant).
+- Store not yet wired to RX path - sims/L2 Unity validate the data structure only.
+
+---
+
 ## 2026-10-21 - L2 store core (ring + cursors)
 
 ### Done

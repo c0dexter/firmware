@@ -37,7 +37,8 @@ Sync manually with GitHub Project when available.
 
 ## Verification
 
-- [x] Native tests green for L1 (`test_client_base_l1`, coverage env, 7/7)
+- [x] Native tests green for L1 (`test_client_base_l1`, coverage env, 8/8 incl. wire-hash fix)
+- [x] Post-change sims re-run + L1 cancel-path code review
 - [x] Native tests for cursor/TTL (L2 store) - `test_client_base_l2_store` 7/7
 - [ ] Performance notes recorded (hot path, flash wear)
 

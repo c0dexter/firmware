@@ -25,6 +25,7 @@ static void installSecondaryAt(ChannelIndex idx, const char *name)
     ch.settings.psk.size = 1;
     ch.settings.psk.bytes[0] = 2;
     channels.setChannel(ch);
+    channels.fixupChannel(idx); // refresh hashes[] used by wire-hash → index lookup
 }
 
 void setUp(void)
@@ -83,6 +84,34 @@ static void test_integration_secondary_channel_feeds_policy(void)
     TEST_ASSERT_TRUE(clientBaseAllowsCancelingDupe(false, pri));
 }
 
+// Regression: FloodingRouter::perhapsCancelDupe runs before perhapsDecode, so
+// MeshPacket.channel is still the wire hash - not a ChannelIndex. Treating the
+// hash as an index made L1 secondary never-cancel a no-op for most hashes.
+static void test_packet_on_secondary_resolves_wire_hash(void)
+{
+    installSecondaryAt(1, "CHAT");
+    const int16_t hash = channels.getHash(1);
+    TEST_ASSERT_TRUE(hash >= 0);
+
+    meshtastic_MeshPacket enc = meshtastic_MeshPacket_init_zero;
+    enc.which_payload_variant = meshtastic_MeshPacket_encrypted_tag;
+    enc.channel = static_cast<uint32_t>(hash);
+    TEST_ASSERT_TRUE(channels.isPacketOnConfiguredSecondary(enc));
+
+    meshtastic_MeshPacket decoded = meshtastic_MeshPacket_init_zero;
+    decoded.which_payload_variant = meshtastic_MeshPacket_decoded_tag;
+    decoded.channel = 1;
+    TEST_ASSERT_TRUE(channels.isPacketOnConfiguredSecondary(decoded));
+
+    decoded.channel = 0; // primary index after decode
+    TEST_ASSERT_FALSE(channels.isPacketOnConfiguredSecondary(decoded));
+
+    // Bug pattern: using raw hash as index (e.g. hash 200) must not spuriously match.
+    enc.channel = 200;
+    if (channels.getHash(1) != 200)
+        TEST_ASSERT_FALSE(channels.isPacketOnConfiguredSecondary(enc));
+}
+
 void setup()
 {
     initializeTestEnvironment();
@@ -94,6 +123,7 @@ void setup()
     RUN_TEST(test_policy_secondary_never_cancels);
     RUN_TEST(test_policy_favorite_never_cancels_even_on_primary);
     RUN_TEST(test_integration_secondary_channel_feeds_policy);
+    RUN_TEST(test_packet_on_secondary_resolves_wire_hash);
     exit(UNITY_END());
 }
 

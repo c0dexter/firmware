@@ -461,6 +461,28 @@ bool Channels::isConfiguredSecondary(ChannelIndex chIndex)
     return ch.has_settings && ch.role == meshtastic_Channel_Role_SECONDARY;
 }
 
+int8_t Channels::getIndexByHash(ChannelHash channelHash)
+{
+    for (ChannelIndex i = 0; i < getNumChannels(); i++) {
+        if (hashes[i] >= 0 && static_cast<ChannelHash>(hashes[i]) == channelHash)
+            return static_cast<int8_t>(i);
+    }
+    return -1;
+}
+
+bool Channels::isPacketOnConfiguredSecondary(const meshtastic_MeshPacket &p)
+{
+    // After perhapsDecode, channel stores the index. Cancel-on-dupe runs earlier on the
+    // still-encrypted wire packet, where channel is still the 1-byte hash.
+    if (p.which_payload_variant == meshtastic_MeshPacket_decoded_tag)
+        return isConfiguredSecondary(static_cast<ChannelIndex>(p.channel));
+
+    const int8_t idx = getIndexByHash(static_cast<ChannelHash>(p.channel));
+    if (idx < 0)
+        return false;
+    return isConfiguredSecondary(static_cast<ChannelIndex>(idx));
+}
+
 bool cryptoKeyIsPublic(const CryptoKey &key)
 {
     if (key.length == 0)
