@@ -51,7 +51,7 @@ Policy lock: `ANALYSIS_AND_SIMULATION.md`, `README.md`.
 ### Kolejność implementacji MVP
 
 1. **L1 + Unity** - **DONE** (2026-10-21).
-2. **L2 storage + cursory + poll/unicast + Unity** - next.
+2. **L2 storage (ring/cursors)** - **DONE** store core; **module + poll/unicast** - **PAUSED** (resume next).
 3. **Opt-in primary TEXT** (config) jeśli nie blokuje 1-2.
 4. Hardening caps / docs / field smoke.
 

@@ -4,6 +4,8 @@ Working design hub for the `feature/client-base-role-improvements` branch on for
 
 This folder is the **project knowledge plane** (not upstream Meshtastic docs). It must stay current while we develop. Upstream documentation will later be distilled into the PR description and [meshtastic/meshtastic](https://github.com/meshtastic/meshtastic) if/when upstreamed.
 
+**Current snapshot:** **[STATUS.md](STATUS.md)** - L1 closed; L2 store done; L2 module/poll **paused**.
+
 ## Goal
 
 Make `CLIENT_BASE` match user expectation: a roof/attic **base** that serves favorited household nodes - without forcing operators onto `ROUTER` / `ROUTER_LATE`, and **without** turning every base into a city-scale public amplifier.
@@ -35,11 +37,11 @@ Scripts: `sim_abstract.py`, `sim_variants.py`, `sim_platform_storage.py` (MEM_CL
 
 See **[MVP_AND_FVP.md](MVP_AND_FVP.md)**. Journal: **[JOURNAL.md](JOURNAL.md)**.
 
-|           | MVP                                                                   | FVP                                                          |
-| --------- | --------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Meaning   | Smallest safe fix of the role promise                                 | Full household-secretary product                             |
-| Must have | L1 secondary + L2 cursors/TTL + caps + tests                          | MVP + app UX + hardening + L3 catch-up + field/upstream docs |
-| Status    | **L1 closed** (on fork). **L2 store core** done. Next: L2 module/poll | After MVP: F1→F7 in `MVP_AND_FVP.md`                         |
+|           | MVP                                                                | FVP                                                          |
+| --------- | ------------------------------------------------------------------ | ------------------------------------------------------------ |
+| Meaning   | Smallest safe fix of the role promise                              | Full household-secretary product                             |
+| Must have | L1 secondary + L2 cursors/TTL + caps + tests                       | MVP + app UX + hardening + L3 catch-up + field/upstream docs |
+| Status    | **L1 closed**. L2 store done. **L2 module paused** (see STATUS.md) | After MVP: F1→F7 in `MVP_AND_FVP.md`                         |
 
 ## Non-goals (MVP)
 
@@ -51,17 +53,18 @@ See **[MVP_AND_FVP.md](MVP_AND_FVP.md)**. Journal: **[JOURNAL.md](JOURNAL.md)**.
 
 ## Artifacts
 
-| File                         | Purpose                                      |
-| ---------------------------- | -------------------------------------------- |
-| `ANALYSIS_AND_SIMULATION.md` | Problem analysis, sim results, locked policy |
-| `MVP_AND_FVP.md`             | MVP scope, done criteria, FVP roadmap        |
-| `JOURNAL.md`                 | Append-only work log                         |
-| `KNOWLEDGE_BASE.md`          | Living decisions / findings                  |
-| `KANBAN.md`                  | Text board                                   |
-| `TODO.md`                    | Checklist                                    |
-| `use-cases.md`               | Scenarios                                    |
-| `schemas.md`                 | Flow diagrams                                |
-| `sim_*.py`                   | Abstract simulations                         |
+| File                         | Purpose                                          |
+| ---------------------------- | ------------------------------------------------ |
+| `STATUS.md`                  | One-page current snapshot (start here on resume) |
+| `ANALYSIS_AND_SIMULATION.md` | Problem analysis, sim results, locked policy     |
+| `MVP_AND_FVP.md`             | MVP scope, done criteria, FVP roadmap            |
+| `JOURNAL.md`                 | Append-only work log                             |
+| `KNOWLEDGE_BASE.md`          | Living decisions / findings                      |
+| `KANBAN.md`                  | Text board                                       |
+| `TODO.md`                    | Checklist                                        |
+| `use-cases.md`               | Scenarios                                        |
+| `schemas.md`                 | Flow diagrams                                    |
+| `sim_*.py`                   | Abstract simulations                             |
 
 ## Remotes
 

@@ -1,6 +1,6 @@
 # Knowledge base - CLIENT_BASE project
 
-_Last updated: 2026-10-21 (L1 + L2 store core)_
+_Last updated: 2026-10-21 (L1 closed; L2 store done; L2 module paused - see STATUS.md)_
 
 Canonical long-form analysis: **[ANALYSIS_AND_SIMULATION.md](ANALYSIS_AND_SIMULATION.md)**.  
 Work log: **[JOURNAL.md](JOURNAL.md)**.

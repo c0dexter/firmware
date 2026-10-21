@@ -33,7 +33,7 @@ Sync manually with GitHub Project when available.
 
 ## In progress
 
-- [ ] MVP L2 module + poll/unicast (store core done)
+- [ ] ~~MVP L2 module + poll/unicast~~ → **PAUSED** (store core done; resume when operator free - see `STATUS.md`)
 
 ## Verification
 

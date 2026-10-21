@@ -4,6 +4,18 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - Pause before L2 module
+
+Operator pause: L2 module/poll deferred until next free session.
+
+**Snapshot:** see **[STATUS.md](STATUS.md)**.
+
+- L1 closed + pushed (incl. wire-hash fix); review says mesh-compatible (local policy only).
+- L2 store core on tree; **not** wired to MeshModule / protobuf / unicast yet.
+- Resume at: L2 ingest + poll protocol decision → module + Unity.
+
+---
+
 ## 2026-10-21 - L1 milestone closed
 
 L1 live bridge is complete on `feature/client-base-role-improvements` (fork):

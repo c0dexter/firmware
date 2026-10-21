@@ -18,7 +18,8 @@
 - [x] Unity tests: L1 secondary never-cancel + policy helpers (`test_client_base_l1`)
 - [x] Implement L1 + tests (FloodingRouter + Channels + ClientBaseRelay.h); wire-hash fix; milestone closed on fork
 - [x] L2 RAM store + cursors + TTL Unity (`ClientBaseSecretaryStore`)
-- [ ] L2 module: ingest secondary TEXT + poll/unicast + tests
+- [ ] L2 module: ingest secondary TEXT + poll/unicast + tests - **NEXT when resuming** (paused 2026-10-21)
+- [ ] L2 protobuf / poll sketch (decide S&F reuse vs new msgs)
 - [ ] L2 nRF flash backend (RAM ok for first ESP path)
 - [ ] M2 opt-in primary TEXT config (default off)
 - [ ] Caps + honest primary opt-in docs; PR-ready
