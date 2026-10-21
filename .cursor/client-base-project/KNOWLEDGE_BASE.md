@@ -62,9 +62,14 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 ### L2-P1 ingest (current)
 
 - `ClientBaseSecretaryIngest.h` - gates + fill lean record + `clientBaseSecretaryIngestText`.
-- Module: `wantPacket` TEXT when ready; ingest configured secondary only; skip `isFromUs`; always CONTINUE.
+- Module: ingest configured secondary TEXT only; skip `isFromUs`; always CONTINUE.
 - Unity `test_client_base_l2_ingest` 5/5.
-- Next: **L2-P2 poll** (D1=A).
+
+### L2-P2 poll (current)
+
+- `ClientBaseSecretaryPoll.h` - begin/busy/empty/pull/abort; Unity `test_client_base_l2_poll` 6/6.
+- Module listens STORE_FORWARD `CLIENT_HISTORY` (favorite ACL silent reject); `ROUTER_BUSY` / `ROUTER_HISTORY`; dump TEXT unicast `hop_limit=0` on stored channel; one dump at a time.
+- Next: **L2-P3** observability + schema docs.
 
 ## Simulation summary (pointer)
 

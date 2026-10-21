@@ -22,8 +22,8 @@
 - [x] L2 D1: lock poll protocol → **A** (S&F RR reuse; no classic S&F co-enable)
 - [x] L2-P0: policy caps + module skeleton + Unity `test_client_base_l2_policy`
 - [x] L2-P1: ingest secondary TEXT + Unity `test_client_base_l2_ingest`
-- [ ] L2-P2: poll/unicast + tests (D1=A) - **NEXT**
-- [ ] L2-P3: caps/docs polish
+- [x] L2-P2: poll/unicast + Unity `test_client_base_l2_poll` (D1=A)
+- [ ] L2-P3: caps/docs polish - **NEXT**
 - [ ] L2 nRF flash backend (RAM ok for first ESP path)
 - [ ] M2 opt-in primary TEXT config (default off)
 - [ ] Caps + honest primary opt-in docs; PR-ready

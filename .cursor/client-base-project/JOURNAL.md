@@ -4,6 +4,14 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - L2-P2 poll session + module dump path
+
+- `ClientBaseSecretaryPoll.h` - ACL/busy/history_return_max/abort; Unity `test_client_base_l2_poll` **6/6**.
+- Module: STORE_FORWARD CLIENT_HISTORY (favorite only) → ROUTER_HISTORY / BUSY; spaced TEXT unicast hop_limit=0 on stored secondary.
+- Pushed prior P0/P1 commits to fork; tip includes this work after commit.
+
+---
+
 ## 2026-10-21 - L2-P1 ingest
 
 - `ClientBaseSecretaryIngest.h` + module `wantPacket` TEXT; secondary-only, skip own TX; CONTINUE (don’t steal phone path).
