@@ -119,6 +119,10 @@
 #if !MESHTASTIC_EXCLUDE_DROPZONE
 #include "modules/DropzoneModule.h"
 #endif
+#if !defined(ARCH_STM32WL)
+#include "mesh/ClientBaseSecretaryPolicy.h"
+#include "modules/ClientBaseSecretaryModule.h"
+#endif
 #if !MESHTASTIC_EXCLUDE_STATUS
 #include "modules/StatusMessageModule.h"
 #endif
@@ -288,6 +292,21 @@ void setupModules()
         storeForwardModule = new StoreForwardModule();
     }
 #endif
+#endif
+#if !defined(ARCH_STM32WL)
+    // Household secretary (L2): CLIENT_BASE only; never alongside classic S&F server.
+    if (clientBaseSecretaryShouldEnable(config.device.role)) {
+#if !MESHTASTIC_EXCLUDE_STOREFORWARD
+        const bool storeForwardOn = moduleConfig.has_store_forward && moduleConfig.store_forward.enabled;
+#else
+        const bool storeForwardOn = false;
+#endif
+        if (!storeForwardOn) {
+            clientBaseSecretaryModule = new ClientBaseSecretaryModule();
+        } else {
+            LOG_WARN("Skip ClientBaseSecretary: StoreForward enabled (D1 product boundary)");
+        }
+    }
 #endif
 #if !MESHTASTIC_EXCLUDE_EXTERNALNOTIFICATION
     externalNotificationModule = new ExternalNotificationModule();

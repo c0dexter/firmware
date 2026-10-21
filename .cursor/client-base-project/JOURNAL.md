@@ -4,6 +4,15 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - L2-P0 skeleton + D1=A
+
+- Locked **D1=A** (reuse StoreForward RR for poll later; never co-enable classic S&F server).
+- Added `ClientBaseSecretaryPolicy.h` (D2 caps), `ClientBaseSecretaryModule` (store only, wantPacket=false), Modules.cpp gate.
+- Unity `test_client_base_l2_policy` **4/4 PASSED**; L1 + L2 store still green.
+- Next: L2-P1 ingest.
+
+---
+
 ## 2026-10-21 - Backlog: L1.5 free-hop for favorites (#8366)
 
 - Operator: important that **dom→dach** via `CLIENT_BASE` not burn `hop_limit` when household is favorited.

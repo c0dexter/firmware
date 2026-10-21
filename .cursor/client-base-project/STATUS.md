@@ -1,6 +1,6 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-21 - paused; L2 execution plan ready (`L2_PLAN.md`)_
+_Last updated: 2026-10-21 - L2-P0 skeleton in progress; D1=A locked_
 
 ## Branch / remote
 
@@ -15,21 +15,19 @@ _Last updated: 2026-10-21 - paused; L2 execution plan ready (`L2_PLAN.md`)_
 | Layer        | What                                                                                                               | Commits (ref)                              |
 | ------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
 | **L1**       | Secondary never-cancel + late window; wire-hash fix on cancel path; Unity 8/8; sims + review; mesh wire-compatible | `855871142`, `5b81c9b5c`, docs `e4baaf0eb` |
-| **L2 store** | `ClientBaseSecretaryStore` (lean 256 B, cursors, TTL); Unity 7/7 - **not wired to RX/module yet**                  | `f5e518782`                                |
-| Docs/policy  | Analysis, sims, MVP/FVP, KB, journal, rules/skills                                                                 | `df318f8fb` + follow-ups                   |
+| **L2 store** | `ClientBaseSecretaryStore` (lean 256 B, cursors, TTL); Unity 7/7                                                   | `f5e518782`                                |
+| **L2-P0**    | Policy caps + `ClientBaseSecretaryModule` skeleton; Unity `test_client_base_l2_policy` 4/4; **no ingest/poll yet** | (this commit)                              |
+| Docs/policy  | Analysis, sims, MVP/FVP, KB, journal; **D1=A** locked                                                              | `df318f8fb` + follow-ups                   |
 
-## Paused / next when resuming
+## Next
 
-Follow **[L2_PLAN.md](L2_PLAN.md)** in order:
-
-1. Lock **D1** (S&F reuse vs new protobuf) + confirm **D2** caps
-2. L2-P0 module skeleton → L2-P1 ingest → L2-P2 poll/unicast → L2-P3 caps/docs
-3. Optional L2-P4 nRF flash, L2-P5 hardware smoke
-4. Later: M2 primary TEXT opt-in; FVP F1-F7
+1. **L2-P1** ingest secondary TEXT → store + Unity
+2. **L2-P2** poll/unicast (D1=A / StoreForward RR) + tests
+3. L2-P3 caps/docs → optional P4/P5; M2; FVP
 
 ## Explicitly not started
 
-- L2 module / on-air poll / client apps
+- L2 ingest / on-air poll / client apps
 - **L1.5 free-hop** for favorite CLIENT via `CLIENT_BASE` (#8366 / `shouldDecrementHopLimit`) - backlog, after L2 module
 - L3 peer / phone BT sync
 - Upstream PR to `meshtastic/firmware`

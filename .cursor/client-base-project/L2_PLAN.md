@@ -33,8 +33,8 @@ _Ready to execute when operator resumes. Policy lock: `ANALYSIS_AND_SIMULATION.m
 | **B. New private portnum / messages** (protobufs repo)                                    | Clean product boundary                                 | Wait for protobufs + client sync; longer calendar                                                 | Prefer for **upstream-ready** MVP / F2                                                                                                         |
 | **C. Temporary TEXT control + binary payload**                                            | Zero proto churn                                       | Ugly; hard to ship upstream                                                                       | Reject for anything beyond a spike                                                                                                             |
 
-**Decision to record in KB when starting:** A or B.  
-**Spike allowed:** implement ingest-only (phase 2) while D1 is open; **do not** ship poll TX until D1 is locked.
+**Decision (LOCKED 2026-10-21): A.** Recorded in KB.  
+P0/P1 may proceed; **do not** ship poll TX until P2 implements A with favorite ACL + S&F co-enable skip (already gated in Modules.cpp).
 
 ### D2 - Default caps (propose; tune later)
 

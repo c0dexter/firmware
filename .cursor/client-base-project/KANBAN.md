@@ -34,7 +34,9 @@ Sync manually with GitHub Project when available.
 
 ## In progress
 
-- [ ] ~~MVP L2 module + poll/unicast~~ → **PAUSED** - resume via `L2_PLAN.md` / `STATUS.md`
+- [x] L2-P0 module skeleton + policy Unity (`test_client_base_l2_policy`)
+- [ ] L2-P1 ingest secondary TEXT + Unity
+- [ ] MVP L2 poll/unicast (P2; D1=A)
 
 ## Verification
 

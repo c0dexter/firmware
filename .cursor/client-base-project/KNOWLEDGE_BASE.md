@@ -8,6 +8,7 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 
 ## Decisions (accepted)
 
+0. **L2 D1 poll protocol (LOCKED 2026-10-21): Option A** - reuse `STORE_FORWARD_APP` / `StoreAndForward` RR for poll when P2 lands. Gate: `role==CLIENT_BASE`, favorite ACL, **never** enable classic S&F server on the same node (`Modules.cpp` skip). Prefer A for MVP speed; B (new portnum) remains FVP/upstream polish if product boundary hurts. **D2 caps** coded in `ClientBaseSecretaryPolicy.h` (TTL 24h, max favorites 8, history_return_max 32, ring by MEM_CLASS ≤256).
 1. **Keep role name `CLIENT_BASE`** - solid fix + secretary upgrade, not a new role.
 2. **Root user pain:** favorites elevate only `from`/`to`; channel broadcasts from the mesh are not elevated → roof phone sees messages, home often does not (cancel-on-dupe + hidden terminal) → operators install ROUTER/ROUTER_LATE.
 3. **L1 + L2 together:** live fix for in-range home; secretary for offline / missed window. L2 alone is insufficient.
@@ -50,8 +51,14 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 
 - `ClientBaseSecretaryStore` - calloc ring + fixed cursor slots; lean 256 B records; `push` / `expire` / `ensureFavorite` / `pullNext` (cursor-only advance).
 - Tests: `test/test_client_base_l2_store/` - 7/7 (multi-reader no purge, TTL, capacity, favorite cap).
-- Still open: ProtobufModule wiring, poll RR, unicast TX, flash spill for nRF, `history_return_max` session cap.
-- **Execution plan:** `L2_PLAN.md` (D1 protocol gate, phases P0-P5, caps proposal, DoD).
+- Still open: ingest (P1), poll RR (P2), flash spill for nRF, session `history_return_max` enforcement on air.
+- **Execution plan:** `L2_PLAN.md` (D1 locked A; phases P0-P5).
+
+### L2-P0 module skeleton (current)
+
+- `ClientBaseSecretaryPolicy.h` - enable gate + D2 caps (Unity `test_client_base_l2_policy` 4/4).
+- `ClientBaseSecretaryModule` - owns store; `wantPacket=false` until P1; registered in `Modules.cpp` only for CLIENT_BASE, skipped if StoreForward enabled / STM32WL.
+- Next: **L2-P1 ingest** secondary TEXT → store.
 
 ## Simulation summary (pointer)
 
@@ -69,7 +76,7 @@ Details and tables: `ANALYSIS_AND_SIMULATION.md` §9.
 ## Open questions
 
 - Exact numeric caps to ship: `history_return_max`, TTL, records per MEM_CLASS (sim suggests 24h@4/h feasible; dump cap e.g. 32-64 msg/session).
-- Protobuf: extend StoreAndForward vs new private control messages (client impact).
+- ~~Protobuf: extend StoreAndForward vs new private control messages~~ → **D1=A locked** (S&F RR reuse); revisit only if A proves too confusing.
 - Exact config key name for primary TEXT opt-in.
 - GitHub Project board ID after `gh auth login`.
 - Upstream PRs: consider omitting `.cursor/` if reviewers prefer; keep on fork.
