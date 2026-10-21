@@ -4,6 +4,14 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - L2-P1 ingest
+
+- `ClientBaseSecretaryIngest.h` + module `wantPacket` TEXT; secondary-only, skip own TX; CONTINUE (don’t steal phone path).
+- Unity `test_client_base_l2_ingest` **5/5 PASSED**.
+- Next: L2-P2 poll (D1=A StoreForward RR).
+
+---
+
 ## 2026-10-21 - L2-P0 skeleton + D1=A
 
 - Locked **D1=A** (reuse StoreForward RR for poll later; never co-enable classic S&F server).

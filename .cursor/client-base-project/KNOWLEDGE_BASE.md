@@ -57,8 +57,14 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 ### L2-P0 module skeleton (current)
 
 - `ClientBaseSecretaryPolicy.h` - enable gate + D2 caps (Unity `test_client_base_l2_policy` 4/4).
-- `ClientBaseSecretaryModule` - owns store; `wantPacket=false` until P1; registered in `Modules.cpp` only for CLIENT_BASE, skipped if StoreForward enabled / STM32WL.
-- Next: **L2-P1 ingest** secondary TEXT → store.
+- `ClientBaseSecretaryModule` - owns store; registered in `Modules.cpp` only for CLIENT_BASE, skipped if StoreForward enabled / STM32WL.
+
+### L2-P1 ingest (current)
+
+- `ClientBaseSecretaryIngest.h` - gates + fill lean record + `clientBaseSecretaryIngestText`.
+- Module: `wantPacket` TEXT when ready; ingest configured secondary only; skip `isFromUs`; always CONTINUE.
+- Unity `test_client_base_l2_ingest` 5/5.
+- Next: **L2-P2 poll** (D1=A).
 
 ## Simulation summary (pointer)
 

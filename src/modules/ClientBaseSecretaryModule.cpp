@@ -1,7 +1,11 @@
 #if !defined(ARCH_STM32WL)
 
 #include "ClientBaseSecretaryModule.h"
+#include "Channels.h"
+#include "MeshTypes.h"
 #include "configuration.h"
+#include "gps/RTC.h"
+#include "mesh/ClientBaseSecretaryIngest.h"
 #include "mesh/ClientBaseSecretaryPolicy.h"
 
 ClientBaseSecretaryModule *clientBaseSecretaryModule;
@@ -24,10 +28,24 @@ ClientBaseSecretaryModule::ClientBaseSecretaryModule() : MeshModule("cbaseSec")
              CLIENT_BASE_SECRETARY_TTL_SEC);
 }
 
+bool ClientBaseSecretaryModule::wantPacket(const meshtastic_MeshPacket *p)
+{
+    return ready_ && p && p->decoded.portnum == meshtastic_PortNum_TEXT_MESSAGE_APP;
+}
+
 ProcessMessage ClientBaseSecretaryModule::handleReceived(const meshtastic_MeshPacket &mp)
 {
-    (void)mp;
-    // P0: wantPacket is false - this path should not run. Keep CONTINUE if it does.
+    if (!ready_) {
+        return ProcessMessage::CONTINUE;
+    }
+
+    const bool onSecondary = channels.isPacketOnConfiguredSecondary(mp);
+    const uint32_t seq = clientBaseSecretaryIngestText(store_, mp, getTime(), onSecondary, isFromUs(&mp));
+    if (seq) {
+        LOG_DEBUG("ClientBaseSecretary ingest seq=%u ch=%u from=0x%08x", seq, mp.channel, getFrom(&mp));
+    }
+
+    // Never steal TEXT from TextMessageModule / phone path.
     return ProcessMessage::CONTINUE;
 }
 

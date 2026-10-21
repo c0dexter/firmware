@@ -7,8 +7,7 @@
 
 /**
  * CLIENT_BASE household secretary (L2).
- * P0: owns RAM store + D2 caps; no ingest/poll yet (P1/P2).
- * D1: poll will reuse STORE_FORWARD_APP RR when wired - not classic S&F server.
+ * P1: ingest secondary TEXT into RAM store (no poll yet - P2 / D1=A).
  */
 class ClientBaseSecretaryModule : public MeshModule
 {
@@ -19,8 +18,7 @@ class ClientBaseSecretaryModule : public MeshModule
     ClientBaseSecretaryStore &store() { return store_; }
     const ClientBaseSecretaryStore &store() const { return store_; }
 
-    /** P0: ignore all ports until P1 ingest / P2 poll. */
-    virtual bool wantPacket(const meshtastic_MeshPacket *p) override { return false; }
+    virtual bool wantPacket(const meshtastic_MeshPacket *p) override;
 
   protected:
     virtual ProcessMessage handleReceived(const meshtastic_MeshPacket &mp) override;

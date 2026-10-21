@@ -1,6 +1,6 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-21 - L2-P0 skeleton in progress; D1=A locked_
+_Last updated: 2026-10-21 - L2-P1 ingest landed; next P2 poll_
 
 ## Branch / remote
 
