@@ -17,7 +17,9 @@ _Ready to execute when operator resumes. Policy lock: `ANALYSIS_AND_SIMULATION.m
 | Policy: secondary TEXT only; favorites ACL; no purge-on-first-ACK | Locked                                          |
 | STM32WL                                                           | No L2 (skip at `#ifdef` / MEM_CLASS)            |
 
-**Resume entry:** this file + `STATUS.md` + skill `client-base-secretary`.
+**Resume entry:** this file + `STATUS.md` + skill `client-base-secretary` + **`UPSTREAM_WATCH.md`** (check PR #12180 before touching L1 cancel path again).
+
+**Note:** L2 (pull) is still valuable even if #12180 lands - live fill-in ≠ offline/multi-reader secretary (#10704).
 
 ---
 

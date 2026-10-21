@@ -1,73 +1,119 @@
-# Upstream watch - version baseline & 3.0
+# Upstream watch - baseline, 2.8/2.9 CLIENT_BASE, 3.0
 
-_Last updated: 2026-10-21 (analysis only; no code change)_
+_Last updated: 2026-10-21_
 
 ## What we build on today
 
-| Item                         | Value                                                                                                                                             |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Branch                       | `feature/client-base-role-improvements` @ fork                                                                                                    |
-| Tip (then)                   | `716496d6d`                                                                                                                                       |
-| `git describe`               | `v2.8.1.8e6a88d-117-g…` - **includes release tag 2.8.1**                                                                                          |
-| Upstream default             | **`develop`** (not `master`)                                                                                                                      |
-| Distance to `origin/develop` | **~2 commits behind** when checked (essentially current)                                                                                          |
-| Latest public release stream | **2.8.1 Alpha** ([releases](https://github.com/meshtastic/firmware/releases)) - 2.8.0 revoked (signing); 2.8.1 signatures incompatible with 2.8.0 |
+| Item                  | Value                                                                         |
+| --------------------- | ----------------------------------------------------------------------------- |
+| Branch                | `feature/client-base-role-improvements` @ fork                                |
+| Upstream default      | **`develop`** (not `master`)                                                  |
+| Lineage               | **`v2.8.1`** included; tip near current `develop`                             |
+| Latest public release | **2.8.1 Alpha** ([releases](https://github.com/meshtastic/firmware/releases)) |
 
-**Verdict:** we are on the **2.8.x / current `develop` line**, not an old 2.6/2.7 fork. Rebase/merge from `origin/develop` before the next big L2 push is still good hygiene (~2 commits drift).
-
-`master` can look “stale” vs our tip - ignore for day-to-day; track **`develop`**.
+Hygiene: rebase/merge `origin/develop` before the next L2 coding session.
 
 ---
 
-## Meshtastic 3.0 - what is publicly known
+## Priority: overlaps with **our** L1/L2 (act on these)
 
-**3.0 is not a shipped product.** It is a GitHub label / holding area for **next-major, often breaking** work. No official release date found. Conversation often points to Discord + labeled issues.
+### P0 - Competing L1 live-relay work (2.8.x)
 
-Useful entry points:
+Same root pain as UC1 (broadcast cancel-on-dupe → indoor misses). **Different fix shape.**
 
-- Label: https://github.com/meshtastic/firmware/labels/3.0
-- Packet structure placeholder: https://github.com/meshtastic/firmware/issues/10042
-- Unofficial radar (not Meshtastic-owned): https://canadaverse.org/meshtastic/releases/
+| Ref                                                                                             | Status                                                   | Approach                                                                                                                                                                                         | vs our L1                                                        |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| [#12156](https://github.com/meshtastic/firmware/issues/12156) CLIENT_BASE Improvements          | Open                                                     | Proposals: 0-hop late fill-in ± power backoff; or TEXT-only elevate                                                                                                                              | Validates problem; airtime concern same as ours                  |
+| **[#12180](https://github.com/meshtastic/firmware/pull/12180)** fill-in for favorited neighbors | **Open**, milestoned toward **2.8.3**, targets `develop` | On **all broadcasts**: if CLIENT_BASE has **direct** favorite (`hops_away==0`), **don’t cancel** on foreign dupe → late window; cancel only if favorite itself relayed (`resolveUniqueLastByte`) | **Conflict / merge risk** with our secondary-scoped never-cancel |
+| [#10704](https://github.com/meshtastic/firmware/issues/10704) roof S&F / pull missing msgs      | Closed stale                                             | Pull history from roof (0-hop answer)                                                                                                                                                            | **Aligns with our L2** direction                                 |
 
-### Themes clustered under 3.0 (open / draft)
+**Our L1 (locked):** never-cancel + late only on **configured SECONDARY**; primary stays CLIENT-like (opt-in TEXT later = M2).
 
-| Theme                               | Example                                | Relevance to CLIENT_BASE L1/L2                                                                                              |
-| ----------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| **Packet / header structure**       | #10042, “replay” flag #11766           | **High** if cancel/dupe/rebroadcast semantics or header fields change                                                       |
-| **Role list reduction**             | #9942 (also labeled **2.9** + **3.0**) | **High** - proposes keeping CLIENT_BASE but may rename/repurpose; mentions possible later deprecation if “replay” covers it |
-| Nested telemetry protos             | #9489, #11520                          | Low for our L1/L2 TEXT path                                                                                                 |
-| nRF FS reliability                  | #4447                                  | Medium for **L2-P4 flash** backend                                                                                          |
-| EU433 / JP freq breaking radio defs | #2696, #11559                          | Low for role logic; regional                                                                                                |
-| Module rename cleanup               | #11122                                 | Low                                                                                                                         |
-| Protobufs channel MQTT flags move   | protobufs #395                         | Low for relay policy                                                                                                        |
+**Their #12180:** never-cancel (late fill-in) on **any broadcast** when a direct favorite exists - including **public primary**. Closer to scoped ROUTER_LATE while someone is “home”; field data shows large delivery win and still less TX than full ROUTER_LATE when favorite proves RX.
 
-### Role issue that matters to us (#9942)
+#### What we should do when resuming
 
-Proposal (discussion, **not merged**): shrink roles; **keep Client_base** in the reduced set; optional future deprecation of `client_base` and/or `router` **if** replay/other mechanisms allow. Alternate UX naming (“Home” roof/attic = former CLIENT_BASE) appears in comments.
+1. **Re-read #12180** before more L1 diffs; check if merged into `develop`.
+2. If **merged**: rebase our branch; decide:
+   - **Complement:** keep secondary elevation as extra guarantee (even without “presence” / hops_away), and rely on #12180 for primary when favorite is direct; or
+   - **Narrow ours:** drop redundant parts if #12180 already covers secondary; keep hash-resolution helpers + tests.
+3. If **not merged**: continue our secondary-scoped path (mesh-safer default per our sims); optionally comment on #12156/#12180 linking analysis (secondary-only system score).
+4. **Do not** blindly adopt “always fill-in all channels” as our default - contradicts locked L1 policy / sim winner `l1_secondary_only`.
 
-→ Our L1/L2 work still targets the **household base behavior**; if 2.9/3.0 renames the enum, we port policy helpers - do **not** stop L2, but avoid assuming the string `CLIENT_BASE` is eternal in UX docs.
+### P1 - L2 validation
 
----
+| Ref                                    | Note                                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------------ |
+| #10704                                 | Community already asked for roof pull / S&F-like 0-hop dump - supports L2 plan |
+| Comments on #12156 (TEXT-only elevate) | Close to our M2 / secondary TEXT focus                                         |
 
-## Impact assessment (for this project)
+### P2 - Hops / “free hop” (adjacent, not our MVP core)
 
-| Layer                          | 3.0 risk now                                      | Action                                                                 |
-| ------------------------------ | ------------------------------------------------- | ---------------------------------------------------------------------- |
-| L1 (cancel / late / secondary) | Low-medium: depends on packet/dupe path stability | Keep helpers pure (`ClientBaseRelay.h`); re-test after develop rebases |
-| L2 store (RAM ring)            | Low                                               | Stable                                                                 |
-| L2 poll protocol               | Medium if new portnums / S&F changes in major     | Prefer D1 design that can swap transport                               |
-| L2 nRF flash                   | Watch #4447                                       | Read before P4                                                         |
-| Role name / enum               | Medium on 2.9/3.0 horizon                         | Track #9942; policy = behavior, not brand                              |
-
-**Recommendation:** continue L2 on **2.8 / develop**. Treat 3.0 as a **watch list**, not a blocker. Refresh this file when #10042 / #9942 move or a 3.0 milestone gets a date.
+| Ref                                                         | Note                                                                                                                                        |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [#8366](https://github.com/meshtastic/firmware/issues/8366) | CLIENT_BASE shouldn’t eat hop for favorites; discussion points at TMM / 2.8; **out of L1/L2 MVP** unless we touch `shouldDecrementHopLimit` |
 
 ---
 
-## Sources checked
+## Label **2.9** (thin public list)
 
-- Local: `git describe`, `origin/develop` vs `HEAD`, tag `v2.8.1.8e6a88d`
-- https://github.com/meshtastic/firmware/releases
+Only two issues currently labeled `2.9`:
+
+| Issue                                                                                                   | Relevance                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [#9942](https://github.com/meshtastic/firmware/issues/9942) reduce roles (also **3.0**)                 | **Keep Client_base** in proposed minimal set; UX rename (“Home”); possible later deprecation if replay exists                                                                                     |
+| [#8347](https://github.com/meshtastic/firmware/issues/8347) mandatory-rebroadcast only via remote admin | Targets **ROUTER / ROUTER_LATE** (infra abuse). CLIENT_BASE mentioned in comments as useful roof role - **unlikely to gate CLIENT_BASE** the same way; watch so household base stays app-settable |
+
+**2.9 is not a shipped train** in the same sense as 2.8.1 releases - treat as planning labels + #9942/#8347 watch.
+
+---
+
+## Label **3.0** (next major cluster)
+
+Not released; no date. Themes that touch us:
+
+| Theme                    | Refs           | Impact                                                                         |
+| ------------------------ | -------------- | ------------------------------------------------------------------------------ |
+| Packet / header / replay | #10042, #11766 | Re-test L1 cancel/late after header changes; L2 “replay” dumps may need a flag |
+| Role reduction / rename  | #9942          | Port `ClientBaseRelay` / role checks; behavior > brand                         |
+| nRF filesystem           | #4447          | Before L2-P4 flash                                                             |
+| Telemetry nested         | #9489…         | Low for TEXT secretary                                                         |
+| Radio region breaking    | EU433 / JP     | Low for role logic                                                             |
+
+---
+
+## Impact matrix (summary)
+
+| Our work                      | Upstream risk                                             | Action                                                      |
+| ----------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
+| **L1 secondary never-cancel** | **High** - #12180 may land on develop / 2.8.3             | Rebase + reconcile before more L1; document complementarity |
+| L1 hash→index fix             | Low (correctness)                                         | Keep regardless of #12180                                   |
+| **L2 secretary**              | Medium-positive (#10704); protocol TBD                    | Continue plan; watch replay flag for 3.0                    |
+| M2 primary TEXT opt-in        | Medium - overlaps #12156 TEXT-only / #12180 all-broadcast | May become redundant or become “narrower than #12180”       |
+| Role name forever             | Medium 2.9/3.0                                            | Policy helpers stay role-agnostic where possible            |
+
+---
+
+## Recommendation
+
+1. **Do not stop** the project - problem is confirmed upstream with field numbers.
+2. Before next coding: **`git fetch` + inspect #12180 merge state**; update this file.
+3. Keep locked default **secondary-scoped** unless we deliberately change policy after comparing airtime to #12180.
+4. L2 remains differentiating (pull / multi-cursor) vs live fill-in PRs.
+5. 2.9/3.0 = watch + rebase discipline, not a rewrite today.
+
+---
+
+## Sources
+
+- `origin/develop`, tag `v2.8.1.8e6a88d`
+- https://github.com/meshtastic/firmware/labels/2.9
 - https://github.com/meshtastic/firmware/labels/3.0
+- https://github.com/meshtastic/firmware/issues/12156
+- https://github.com/meshtastic/firmware/pull/12180
+- https://github.com/meshtastic/firmware/issues/10704
 - https://github.com/meshtastic/firmware/issues/9942
+- https://github.com/meshtastic/firmware/issues/8347
+- https://github.com/meshtastic/firmware/issues/8366
 - https://github.com/meshtastic/firmware/issues/10042
-- https://canadaverse.org/meshtastic/releases/ (unofficial)
+- https://github.com/meshtastic/firmware/issues/11766

@@ -4,11 +4,18 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - Upstream 2.8/2.9 CLIENT_BASE overlap deep-dive
+
+- **P0:** [#12156](https://github.com/meshtastic/firmware/issues/12156) + open PR **[#12180](https://github.com/meshtastic/firmware/pull/12180)** (→ develop / milestoned ~2.8.3): live fill-in for **all broadcasts** when a **direct favorite** exists - same UC1 pain, broader airtime than our secondary-only L1.
+- **L2:** [#10704](https://github.com/meshtastic/firmware/issues/10704) (stale) asked for roof pull / 0-hop S&F - validates secretary direction.
+- **2.9 label:** only #9942 (roles) + #8347 (gate ROUTER via admin). CLIENT_BASE likely stays user-settable.
+- **Action on resume:** rebase develop; reconcile L1 vs #12180 before more cancel-path work. Full matrix: `UPSTREAM_WATCH.md`.
+
 ## 2026-10-21 - Upstream version + 3.0 watch (notes only)
 
-- Baseline: `git describe` ≈ **v2.8.1…**; tip ≈ current **`origin/develop`** (−2). Not on stale master.
-- 3.0: label/holding area (packet structure #10042, roles #9942, telemetry, nRF FS, EU433). No release date.
-- Impact: watch roles/packet issues; **do not block L2**. Notes: `UPSTREAM_WATCH.md`.
+- Baseline: `git describe` ≈ **v2.8.1…**; tip ≈ current **`origin/develop`**. Not on stale master.
+- 3.0: label/holding area (packet structure #10042, roles #9942, …). No release date.
+- Notes expanded in `UPSTREAM_WATCH.md`.
 
 ---
 
