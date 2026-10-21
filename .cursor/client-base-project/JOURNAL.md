@@ -4,6 +4,14 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - Backlog: L1.5 free-hop for favorites (#8366)
+
+- Operator: important that **dom→dach** via `CLIENT_BASE` not burn `hop_limit` when household is favorited.
+- Today’s gap documented; item added to KANBAN / TODO / KB / UPSTREAM_WATCH P2 / ALIGNMENT §D / STATUS.
+- Schedule: after L2 module (or with M2); design gate on hop-preserve loops first.
+
+---
+
 ## 2026-10-21 - Alignment memo (rejection risk)
 
 - Wrote **ALIGNMENT_WITH_UPSTREAM.md**: same problem as #12156/#12180; our secondary-scoped default is _more_ maintainer-aligned on airtime than all-broadcast fill-in.

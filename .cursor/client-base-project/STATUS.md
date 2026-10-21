@@ -30,6 +30,7 @@ Follow **[L2_PLAN.md](L2_PLAN.md)** in order:
 ## Explicitly not started
 
 - L2 module / on-air poll / client apps
+- **L1.5 free-hop** for favorite CLIENT via `CLIENT_BASE` (#8366 / `shouldDecrementHopLimit`) - backlog, after L2 module
 - L3 peer / phone BT sync
 - Upstream PR to `meshtastic/firmware`
 

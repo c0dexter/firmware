@@ -25,6 +25,16 @@
 - [ ] M2 opt-in primary TEXT config (default off)
 - [ ] Caps + honest primary opt-in docs; PR-ready
 
+## Adjacent (not blocking L2; do after module or with M2)
+
+- [ ] **L1.5 free-hop for favorites** - dom→dach nie powinien zjadać skoku z budżetu mesh (#8366)
+  - Today: `Router::shouldDecrementHopLimit` - first hop always decrement; preserve only when previous relay is unambiguous favorite ROUTER / ROUTER_LATE / CLIENT_BASE
+  - Desired: when local is `CLIENT_BASE` and packet is from / via a **favorite household CLIENT**, consider not burning that hop (or equivalent scoped rule)
+  - Fits our ACL story (favorites = served household); not attic=ROUTER
+  - Design gate: loop / infinite hop-preserve safety (why first-hop always decrements today)
+  - Tests: Unity around `shouldDecrementHopLimit` + CLIENT_BASE + favorite CLIENT cases
+  - Track: `UPSTREAM_WATCH.md` P2; notes in KB
+
 ## FVP (later)
 
 - [ ] F1-F7 per `MVP_AND_FVP.md` (apps, hardening, phone BT sync, optional LoRa peer, field)

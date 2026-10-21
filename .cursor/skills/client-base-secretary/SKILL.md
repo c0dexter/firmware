@@ -35,6 +35,12 @@ description: >-
 - Use LEAN ~256 B records; see `sim_platform_storage.py` / ANALYSIS §9.
 - Cap `history_return_max` and max favorites - full buffer dump ≈ minutes of local airtime.
 
+### L1.5 - free-hop (backlog)
+
+- Goal: favorite household **CLIENT** → roof `CLIENT_BASE` should not burn `hop_limit` (dom→dach). Upstream [#8366](https://github.com/meshtastic/firmware/issues/8366).
+- Today: `Router::shouldDecrementHopLimit` - first hop always −1; preserve only favorite ROUTER/ROUTER_LATE/CLIENT_BASE peers.
+- Not MVP-blocking; after L2 module / with M2. Design loop-safety before coding. See KANBAN / TODO / KB.
+
 ### L3 - peer catch-up
 
 - Out of MVP. Document only in knowledge base if discussed.

@@ -48,9 +48,11 @@ Nasza polityka i nasze symulacje **adresują dokładnie ten strach**.
 | Rename UX „Home”                    | komentarze #9942                          | OK później              | Niskie                                                                   |
 | Gate ROUTER behind admin            | #8347 (2.9)                               | Nie atakuje CLIENT_BASE | Wręcz **wspiera** sens poprawiania CLIENT_BASE zamiast ucieczki w ROUTER |
 
-### D. Hops „za darmo” (#8366)
+### D. Hops „za darmo” (#8366) - **nasz backlog L1.5**
 
-Poza naszym MVP. Nie koliduje; nie opierać na tym PR L1/L2.
+- Ten sam problem: ulubiony CLIENT w domu → dach `CLIENT_BASE` pali `hop_limit` (first hop zawsze −1; preserve tylko między favorite ROUTER/CLIENT_BASE).
+- Pasuje do naszej ACL (favorites = household); nie jest attic=ROUTER.
+- **W backlogu** (KANBAN/TODO/KB) - po L2 module / obok M2; osobna bramka design (pętle hop-preserve). Nie blokuje L1/L2 MVP.
 
 ---
 

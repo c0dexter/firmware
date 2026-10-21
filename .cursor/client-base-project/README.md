@@ -29,11 +29,12 @@ Scripts: `sim_abstract.py`, `sim_variants.py`, `sim_platform_storage.py` (MEM_CL
 
 ## Layers
 
-| Layer | Name          | MVP? | Intent                                                                              |
-| ----- | ------------- | ---- | ----------------------------------------------------------------------------------- |
-| L1    | Live bridge   | Yes  | Secondary (default): home hears private traffic the roof got; no CLIENT cancel race |
-| L2    | Secretary     | Yes  | Buffer those secondaries; on-demand unicast to favorites                            |
-| L3    | Peer catch-up | FVP  | After roof TTL - app BT/Wi‑Fi sync first; LoRa peer optional                        |
+| Layer | Name          | MVP?    | Intent                                                                              |
+| ----- | ------------- | ------- | ----------------------------------------------------------------------------------- |
+| L1    | Live bridge   | Yes     | Secondary (default): home hears private traffic the roof got; no CLIENT cancel race |
+| L2    | Secretary     | Yes     | Buffer those secondaries; on-demand unicast to favorites                            |
+| L3    | Peer catch-up | FVP     | After roof TTL - app BT/Wi‑Fi sync first; LoRa peer optional                        |
+| L1.5  | Free-hop      | Backlog | Favorite CLIENT → roof `CLIENT_BASE` nie pali skoku (#8366) - po L2 module          |
 
 ## MVP vs FVP
 

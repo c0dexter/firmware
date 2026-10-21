@@ -47,11 +47,11 @@ Same root pain as UC1 (broadcast cancel-on-dupe → indoor misses). **Different 
 | #10704                                 | Community already asked for roof pull / S&F-like 0-hop dump - supports L2 plan |
 | Comments on #12156 (TEXT-only elevate) | Close to our M2 / secondary TEXT focus                                         |
 
-### P2 - Hops / “free hop” (adjacent, not our MVP core)
+### P2 - Hops / “free hop” (**our backlog L1.5** - after L2 module / with M2)
 
-| Ref                                                         | Note                                                                                                                                        |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| [#8366](https://github.com/meshtastic/firmware/issues/8366) | CLIENT_BASE shouldn’t eat hop for favorites; discussion points at TMM / 2.8; **out of L1/L2 MVP** unless we touch `shouldDecrementHopLimit` |
+| Ref                                                         | Note                                                                                                                                                                                                                                                              |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [#8366](https://github.com/meshtastic/firmware/issues/8366) | CLIENT_BASE shouldn’t eat hop for favorites. **Accepted into our backlog (L1.5)** 2026-10-21: today `shouldDecrementHopLimit` still burns hop for favorite **CLIENT** (first hop always −1; preserve only favorite ROUTER/CLIENT_BASE). Design+Unity before code. |
 
 ---
 

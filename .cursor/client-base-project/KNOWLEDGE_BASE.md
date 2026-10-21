@@ -1,6 +1,6 @@
 # Knowledge base - CLIENT_BASE project
 
-_Last updated: 2026-10-21 (upstream 2.8/develop + 3.0 watch)_
+_Last updated: 2026-10-21 (L1.5 free-hop backlog + upstream watch)_
 
 Canonical long-form analysis: **[ANALYSIS_AND_SIMULATION.md](ANALYSIS_AND_SIMULATION.md)**.  
 Work log: **[JOURNAL.md](JOURNAL.md)**. Execution plan: **[L2_PLAN.md](L2_PLAN.md)**.  
@@ -75,6 +75,15 @@ Details and tables: `ANALYSIS_AND_SIMULATION.md` §9.
 - Upstream PRs: consider omitting `.cursor/` if reviewers prefer; keep on fork.
 - **Upstream L1 overlap:** #12156 / PR **#12180** (all-broadcast fill-in if direct favorite) vs our secondary-only L1 - reconcile on resume (`UPSTREAM_WATCH.md`).
 - **2.9 / 3.0:** #9942 roles; #10042 packet structure - watch, not L2 blockers.
+- **L1.5 free-hop (#8366):** exact heuristic so favorite CLIENT → `CLIENT_BASE` does not burn `hop_limit`, without reopening hop-preserve loops (first hop always decrements today). Backlog - not locked policy yet.
+
+## Findings (hops / free-hop - backlog L1.5)
+
+- User ask (2026-10-21): household favorites should get a “free” hop via roof `CLIENT_BASE` so **dom→dach** does not consume mesh hop budget.
+- Code today (`Router::shouldDecrementHopLimit`): (1) `getHopsAway==0` → always decrement; (2) preserve only if local is ROUTER/ROUTER_LATE/CLIENT_BASE **and** previous relay resolves to unique favorite ROUTER/ROUTER_LATE/CLIENT_BASE.
+- Gap: typical home node is **CLIENT** favorite → roof still burns a hop. Aligns with upstream [#8366](https://github.com/meshtastic/firmware/issues/8366).
+- Distinct from #12156 “0-hop late fill-in” (local spillover-limited TX) and from L2 poll answers (`hop_limit=0` local unicast).
+- Why it fits us: same favorites ACL as L1/L2; scoped to served household, not public amplify. Schedule after L2 module / with M2.
 
 ## Upstream baseline (2026-10-21)
 
