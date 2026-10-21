@@ -4,11 +4,11 @@ _Last updated: 2026-10-21 - L2-P1 ingest landed; next P2 poll_
 
 ## Branch / remote
 
-|                   |                                          |
-| ----------------- | ---------------------------------------- |
-| Branch            | `feature/client-base-role-improvements`  |
-| Fork tip (approx) | see `git log -1` on branch (plan commit) |
-| Push remote       | `fork` → `c0dexter/firmware`             |
+|                   |                                         |
+| ----------------- | --------------------------------------- |
+| Branch            | `feature/client-base-role-improvements` |
+| Fork tip (approx) | see `git log -1` on branch              |
+| Push remote       | `fork` → `c0dexter/firmware`            |
 
 ## Done
 
@@ -16,18 +16,18 @@ _Last updated: 2026-10-21 - L2-P1 ingest landed; next P2 poll_
 | ------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
 | **L1**       | Secondary never-cancel + late window; wire-hash fix on cancel path; Unity 8/8; sims + review; mesh wire-compatible | `855871142`, `5b81c9b5c`, docs `e4baaf0eb` |
 | **L2 store** | `ClientBaseSecretaryStore` (lean 256 B, cursors, TTL); Unity 7/7                                                   | `f5e518782`                                |
-| **L2-P0**    | Policy caps + `ClientBaseSecretaryModule` skeleton; Unity `test_client_base_l2_policy` 4/4; **no ingest/poll yet** | (this commit)                              |
+| **L2-P0**    | Policy caps + module skeleton; Unity `test_client_base_l2_policy` 4/4                                              | `86799a79e`                                |
+| **L2-P1**    | Secondary TEXT ingest → store; Unity `test_client_base_l2_ingest` 5/5; **no poll yet**                             | `213665280`                                |
 | Docs/policy  | Analysis, sims, MVP/FVP, KB, journal; **D1=A** locked                                                              | `df318f8fb` + follow-ups                   |
 
 ## Next
 
-1. **L2-P1** ingest secondary TEXT → store + Unity
-2. **L2-P2** poll/unicast (D1=A / StoreForward RR) + tests
-3. L2-P3 caps/docs → optional P4/P5; M2; FVP
+1. **L2-P2** poll/unicast (D1=A / StoreForward RR) + Unity
+2. L2-P3 caps/docs → optional P4/P5; M2; FVP
 
 ## Explicitly not started
 
-- L2 ingest / on-air poll / client apps
+- L2 on-air poll / client apps
 - **L1.5 free-hop** for favorite CLIENT via `CLIENT_BASE` (#8366 / `shouldDecrementHopLimit`) - backlog, after L2 module
 - L3 peer / phone BT sync
 - Upstream PR to `meshtastic/firmware`
