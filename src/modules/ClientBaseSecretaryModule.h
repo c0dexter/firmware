@@ -22,6 +22,11 @@ class ClientBaseSecretaryModule : private concurrency::OSThread, public Protobuf
     ClientBaseSecretaryStore &store() { return store_; }
     const ClientBaseSecretaryStore &store() const { return store_; }
 
+    uint32_t statEnqueued() const { return statEnqueued_; }
+    uint32_t statPulled() const { return statPulled_; }
+    uint32_t statBusy() const { return statBusy_; }
+    uint32_t statRejected() const { return statRejected_; }
+
     virtual bool wantPacket(const meshtastic_MeshPacket *p) override;
 
   protected:
@@ -37,7 +42,11 @@ class ClientBaseSecretaryModule : private concurrency::OSThread, public Protobuf
     ClientBaseSecretaryStore store_;
     ClientBaseSecretaryPollSession session_;
     bool ready_ = false;
-    uint32_t packetTimeMaxMs_ = 2500;
+
+    uint32_t statEnqueued_ = 0;
+    uint32_t statPulled_ = 0;
+    uint32_t statBusy_ = 0;
+    uint32_t statRejected_ = 0;
 };
 
 extern ClientBaseSecretaryModule *clientBaseSecretaryModule;

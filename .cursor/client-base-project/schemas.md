@@ -1,4 +1,4 @@
-# Schemas — CLIENT_BASE
+# Schemas - CLIENT_BASE
 
 Aligned with locked policy (`ANALYSIS_AND_SIMULATION.md`).
 
@@ -60,6 +60,31 @@ sequenceDiagram
   Note over Roof: payload remains
   B->>Roof: poll later
   Roof->>B: unicast from cursor_B
+```
+
+## L2 poll wire (D1=A - StoreForward RR)
+
+Control on `STORE_FORWARD_APP`. Payloads as normal `TEXT_MESSAGE_APP` unicast (`hop_limit=0`) on the **stored secondary channel**. Classic S&F server must stay off on the same node.
+
+```mermaid
+sequenceDiagram
+  participant Home as Favorite CLIENT
+  participant Roof as CLIENT_BASE secretary
+  Home->>Roof: CLIENT_HISTORY (S&F)
+  alt not favorite
+    Note over Roof: silent ignore
+  else busy (other dump)
+    Roof->>Home: ROUTER_BUSY
+  else empty cursor
+    Roof->>Home: ROUTER_HISTORY (n=0)
+  else started
+    Roof->>Home: ROUTER_HISTORY (n≤history_return_max)
+    loop each message spaced ~2.5s
+      Roof->>Home: TEXT unicast hop_limit=0 (same secondary)
+      Note over Roof: advance cursor_Home only
+    end
+  end
+  Home-->>Roof: CLIENT_ABORT (optional mid-dump)
 ```
 
 ## Multi-reader cursors

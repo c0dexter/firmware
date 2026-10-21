@@ -37,7 +37,8 @@ Sync manually with GitHub Project when available.
 - [x] L2-P0 module skeleton + policy Unity (`test_client_base_l2_policy`)
 - [x] L2-P1 ingest secondary TEXT + Unity (`test_client_base_l2_ingest`)
 - [x] L2-P2 poll session + module dump (`test_client_base_l2_poll`)
-- [ ] L2-P3 caps/docs polish
+- [x] L2-P3 caps/docs polish
+- [ ] L2-P5 hardware smoke (stretch)
 
 ## Verification
 

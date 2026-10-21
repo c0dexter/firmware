@@ -165,12 +165,12 @@ P0/P1 may proceed; **do not** ship poll TX until P2 implements A with favorite A
 
 ## 6. Definition of done (L2 firmware MVP)
 
-- [ ] CLIENT_BASE only; secondary TEXT buffered in lean store
-- [ ] Favorites can poll; cursors independent; no purge-on-ACK
-- [ ] Caps enforced; busy behavior defined
-- [ ] Unity green for ingest + poll suites
-- [ ] Docs: STATUS/JOURNAL/KB + schema poll diagram
-- [ ] D1 decision recorded in KB
+- [x] CLIENT_BASE only; secondary TEXT buffered in lean store
+- [x] Favorites can poll; cursors independent; no purge-on-ACK
+- [x] Caps enforced; busy behavior defined
+- [x] Unity green for ingest + poll suites (+ policy/store)
+- [x] Docs: STATUS/JOURNAL/KB + schema poll diagram
+- [x] D1 decision recorded in KB
 - [ ] (Stretch) one hardware smoke UC6
 
 M2 (primary TEXT opt-in) and upstream PR are **adjacent**, not required to call L2 firmware slice done.

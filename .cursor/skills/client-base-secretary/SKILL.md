@@ -47,10 +47,10 @@ description: >-
 
 ## Performance checklist
 
-- [ ] RX path alloc-free
-- [ ] Hard caps: records, served favorites, poll interval
-- [ ] nRF: no large payload arrays in SRAM
-- [ ] Extra airtime justified and scoped (channel / role)
+- [x] RX path alloc-free (ingest: no flash; counters only)
+- [x] Hard caps: records, served favorites, poll interval (`ClientBaseSecretaryPolicy.h`)
+- [ ] nRF: no large payload arrays in SRAM (P4 flash spill still open)
+- [x] Extra airtime justified and scoped (channel / role; dump hop_limit=0)
 
 ## Tests
 

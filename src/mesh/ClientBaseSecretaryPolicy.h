@@ -18,6 +18,9 @@ static constexpr uint8_t CLIENT_BASE_SECRETARY_MAX_FAVORITES = 8;
 /** Hard cap on unicast frames per poll session (airtime). */
 static constexpr uint16_t CLIENT_BASE_SECRETARY_HISTORY_RETURN_MAX = 32;
 
+/** Spacing between dump frames (ms) - airtime fairness vs S&F-like. */
+static constexpr uint32_t CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS = 2500;
+
 /** Ring sizes by MEM_CLASS - dump time bounded even on LARGE. */
 static constexpr uint16_t CLIENT_BASE_SECRETARY_RING_SMALL = 64;
 static constexpr uint16_t CLIENT_BASE_SECRETARY_RING_MEDIUM = 96;

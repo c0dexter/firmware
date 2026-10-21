@@ -4,6 +4,14 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - L2-P3 caps / observability / docs
+
+- D2 interval constant `CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS`; module stats enqueued/pulled/busy/rejected (no INFO on ingest hot path).
+- `schemas.md` S&F poll sequence; UC5/UC6 wire notes; L2_PLAN DoD checked (stretch: hardware smoke).
+- Full `test_client_base_l2*` sweep.
+
+---
+
 ## 2026-10-21 - L2-P2 poll session + module dump path
 
 - `ClientBaseSecretaryPoll.h` - ACL/busy/history_return_max/abort; Unity `test_client_base_l2_poll` **6/6**.

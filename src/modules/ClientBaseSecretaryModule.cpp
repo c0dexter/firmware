@@ -31,8 +31,9 @@ ClientBaseSecretaryModule::ClientBaseSecretaryModule()
         return;
     }
 
-    LOG_INFO("ClientBaseSecretary ready: cap=%u favorites=%u ttl=%u s return_max=%u", cap, CLIENT_BASE_SECRETARY_MAX_FAVORITES,
-             CLIENT_BASE_SECRETARY_TTL_SEC, CLIENT_BASE_SECRETARY_HISTORY_RETURN_MAX);
+    LOG_INFO("ClientBaseSecretary ready: cap=%u favorites=%u ttl=%u s return_max=%u interval=%u ms", cap,
+             CLIENT_BASE_SECRETARY_MAX_FAVORITES, CLIENT_BASE_SECRETARY_TTL_SEC, CLIENT_BASE_SECRETARY_HISTORY_RETURN_MAX,
+             CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS);
     disable();
 }
 
@@ -60,6 +61,8 @@ ProcessMessage ClientBaseSecretaryModule::handleReceived(const meshtastic_MeshPa
         const bool onSecondary = channels.isPacketOnConfiguredSecondary(mp);
         const uint32_t seq = clientBaseSecretaryIngestText(store_, mp, getTime(), onSecondary, isFromUs(&mp));
         if (seq) {
+            statEnqueued_++;
+            // Hot path: no LOG_INFO - DEBUG only
             LOG_DEBUG("ClientBaseSecretary ingest seq=%u ch=%u from=0x%08x", seq, mp.channel, getFrom(&mp));
         }
         return ProcessMessage::CONTINUE;
@@ -97,14 +100,17 @@ bool ClientBaseSecretaryModule::handleReceivedProtobuf(const meshtastic_MeshPack
 
     case meshtastic_StoreAndForward_RequestResponse_CLIENT_HISTORY: {
         if (!nodeDB || !nodeDB->isFavorite(from)) {
+            statRejected_++;
             return true; // silent reject
         }
 
         const auto start = clientBaseSecretaryBeginPoll(store_, session_, from, true, CLIENT_BASE_SECRETARY_HISTORY_RETURN_MAX);
         switch (start) {
         case ClientBaseSecretaryPollStart::Busy:
+            statBusy_++;
             sendRr(from, meshtastic_StoreAndForward_RequestResponse_ROUTER_BUSY);
-            LOG_INFO("ClientBaseSecretary: busy (to=0x%08x)", session_.busyTo);
+            LOG_INFO("ClientBaseSecretary: busy enq=%u pulled=%u busy=%u rej=%u", statEnqueued_, statPulled_, statBusy_,
+                     statRejected_);
             break;
         case ClientBaseSecretaryPollStart::Empty:
             sendHistoryHeader(from, 0);
@@ -112,10 +118,12 @@ bool ClientBaseSecretaryModule::handleReceivedProtobuf(const meshtastic_MeshPack
             break;
         case ClientBaseSecretaryPollStart::Started:
             sendHistoryHeader(from, session_.remaining);
-            LOG_INFO("ClientBaseSecretary: dump %u msg to 0x%08x", session_.remaining, from);
-            setIntervalFromNow(packetTimeMaxMs_);
+            LOG_INFO("ClientBaseSecretary: dump %u msg to 0x%08x (enq=%u)", session_.remaining, from, statEnqueued_);
+            setIntervalFromNow(CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS);
             break;
         case ClientBaseSecretaryPollStart::Rejected:
+            statRejected_++;
+            break;
         default:
             break;
         }
@@ -183,7 +191,7 @@ bool ClientBaseSecretaryModule::sendNextPayload()
     meshtastic_MeshPacket *p = router->allocForSending();
     if (!p) {
         LOG_WARN("ClientBaseSecretary: allocForSending failed");
-        return true; // keep session, retry
+        return true;
     }
 
     p->to = dest;
@@ -207,6 +215,7 @@ bool ClientBaseSecretaryModule::sendNextPayload()
         return false;
     }
 
+    statPulled_++;
     service->sendToMesh(p);
     return session_.busy;
 }
@@ -218,10 +227,10 @@ int32_t ClientBaseSecretaryModule::runOnce()
     }
 
     if (!sendNextPayload()) {
-        LOG_INFO("ClientBaseSecretary: dump done sent=%u", session_.sent);
+        LOG_INFO("ClientBaseSecretary: dump done sent=%u pulled=%u enq=%u", session_.sent, statPulled_, statEnqueued_);
         return disable();
     }
-    return packetTimeMaxMs_;
+    return CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS;
 }
 
 #endif // !ARCH_STM32WL

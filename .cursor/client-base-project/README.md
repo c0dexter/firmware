@@ -4,8 +4,8 @@ Working design hub for the `feature/client-base-role-improvements` branch on for
 
 This folder is the **project knowledge plane** (not upstream Meshtastic docs). It must stay current while we develop. Upstream documentation will later be distilled into the PR description and [meshtastic/meshtastic](https://github.com/meshtastic/meshtastic) if/when upstreamed.
 
-**Current snapshot:** **[STATUS.md](STATUS.md)** - L1 closed; L2 through **P2 poll**; D1=A locked.  
-**Next work:** **[L2_PLAN.md](L2_PLAN.md)** - **L2-P3** caps/docs.  
+**Current snapshot:** **[STATUS.md](STATUS.md)** - L1 + L2 firmware MVP (**P0-P3**); D1=A locked.  
+**Next work:** hardware smoke (P5) / M2 / L1.5 - see STATUS.  
 **Upstream alignment:** **[ALIGNMENT_WITH_UPSTREAM.md](ALIGNMENT_WITH_UPSTREAM.md)** (nasze vs #12180 / #10704 - ryzyko review).
 
 ## Goal
