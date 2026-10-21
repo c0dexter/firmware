@@ -7,7 +7,7 @@ _Last updated: 2026-10-21 - session paused before L2 module work_
 |                   |                                         |
 | ----------------- | --------------------------------------- |
 | Branch            | `feature/client-base-role-improvements` |
-| Fork tip (approx) | `e4baaf0eb` + later status commit       |
+| Fork tip (approx) | `0aaff8dae` (pause snapshot)            |
 | Push remote       | `fork` → `c0dexter/firmware`            |
 
 ## Done
