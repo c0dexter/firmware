@@ -4,6 +4,14 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-21 - Alignment memo (rejection risk)
+
+- Wrote **ALIGNMENT_WITH_UPSTREAM.md**: same problem as #12156/#12180; our secondary-scoped default is _more_ maintainer-aligned on airtime than all-broadcast fill-in.
+- L2 backed by #10704 narrative; don’t fight #12180 - rebase/complement.
+- Verdict: good direction; main process risk is merge order with #12180, not “wrong idea”.
+
+---
+
 ## 2026-10-21 - Upstream 2.8/2.9 CLIENT_BASE overlap deep-dive
 
 - **P0:** [#12156](https://github.com/meshtastic/firmware/issues/12156) + open PR **[#12180](https://github.com/meshtastic/firmware/pull/12180)** (→ develop / milestoned ~2.8.3): live fill-in for **all broadcasts** when a **direct favorite** exists - same UC1 pain, broader airtime than our secondary-only L1.
