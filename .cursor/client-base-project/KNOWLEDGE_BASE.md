@@ -69,7 +69,12 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 
 - `ClientBaseSecretaryPoll.h` - begin/busy/empty/pull/abort; Unity `test_client_base_l2_poll` 6/6.
 - Module listens STORE_FORWARD `CLIENT_HISTORY` (favorite ACL silent reject); `ROUTER_BUSY` / `ROUTER_HISTORY`; dump TEXT unicast `hop_limit=0` on stored channel; one dump at a time.
-- Next: **L2-P3** observability + schema docs.
+
+### L2-P3 polish (current)
+
+- Caps: `CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS`; module stats enqueued/pulled/busy/rejected (no INFO on ingest hot path).
+- Docs: `schemas.md` S&F poll sequence; UC5/UC6; L2_PLAN DoD checked (stretch = hardware smoke).
+- Next: **P5 hardware smoke** / M2 / L1.5.
 
 ## Simulation summary (pointer)
 
