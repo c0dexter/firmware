@@ -108,9 +108,9 @@ P0/P1 may proceed; **do not** ship poll TX until P2 implements A with favorite A
 
 | Task | Detail                                                        |
 | ---- | ------------------------------------------------------------- |
-| P4.1 | Interface: ring ops behind backend (RAM vs flash+index)       |
-| P4.2 | nRF: index in SRAM, payloads LittleFS/QSPI; wear-aware append |
-| P4.3 | Unity + dry-run capacity checks                               |
+| P4.1 | Interface: ring ops behind backend (RAM vs flash+index)       | **Done** `ClientBaseSecretaryRing.h` + design `L2_P4_DESIGN.md` |
+| P4.2 | nRF: index in SRAM, payloads LittleFS/QSPI; wear-aware append | Next                                                            |
+| P4.3 | Unity + dry-run capacity checks                               | With P4.2                                                       |
 
 **Note:** MVP can ship ESP RAM-only; nRF L2 follows P4.
 

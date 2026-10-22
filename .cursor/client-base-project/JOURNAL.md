@@ -4,6 +4,12 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-22 - L2-P4.1 ring backend interface
+
+- Extracted `ClientBaseSecretaryRing` / `RamRing`; Store keeps cursors only.
+- Design note `L2_P4_DESIGN.md`. Unity store 7/7, poll 7/7, dump 3/3.
+- Next: P4.2 flash spill on nRF (not on RX hot path).
+
 ## 2026-10-22 - Priority queue + merge develop
 
 - Locked **QUEUE.md**: P0 hygiene → P1 L2-P4 → P2 M2 proto → P3 UC6 → FVP.

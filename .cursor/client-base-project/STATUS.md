@@ -1,6 +1,6 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-22 - merged origin/develop; queue locked in QUEUE.md (next = L2-P4)_
+_Last updated: 2026-10-22 - L2-P4.1 ring interface+RAM; next P4.2 flash / QUEUE.md_
 
 ## Branch / remote
 
@@ -28,7 +28,7 @@ _Last updated: 2026-10-22 - merged origin/develop; queue locked in QUEUE.md (nex
 
 See **[QUEUE.md](QUEUE.md)** (locked priority order).
 
-1. **Next:** L2-P4 nRF flash backend (P4.1 interface first).
+1. **Next:** L2-P4.2 nRF LittleFS/QSPI spill (design: `L2_P4_DESIGN.md`).
 2. Then M2 protobuf; UC6 field; FVP UX / upstream PR.
 3. **No new L1** until #12180 merges or we re-decide (stance in UPSTREAM_WATCH).
 

@@ -47,9 +47,10 @@ Sync manually with GitHub Project when available.
 - [x] Native tests for cursor/TTL (L2 store) - `test_client_base_l2_store` 7/7
 - [x] Native tests L1.5 - `test_client_base_l15_hop` 8/8; nexthop + L1 regression green
 - [x] Upstream watch: 2.8 #12180 / 2.9 roles / 3.0 packet - `UPSTREAM_WATCH.md`
-- [x] Merge `develop` (2026-10-22); #12180 still open — stance in UPSTREAM_WATCH / QUEUE.md
-- [ ] Performance notes recorded (hot path, flash wear) — with L2-P4
-- [ ] L2-P4 nRF flash backend (QUEUE P1)
+- [x] Merge `develop` (2026-10-22); #12180 still open - stance in UPSTREAM_WATCH / QUEUE.md
+- [ ] Performance notes recorded (hot path, flash wear) - with L2-P4
+- [x] L2-P4.1 ring interface + RAM backend (`ClientBaseSecretaryRing.h`)
+- [ ] L2-P4.2 nRF flash spill (QUEUE P1 remaining)
 
 ## Done
 
