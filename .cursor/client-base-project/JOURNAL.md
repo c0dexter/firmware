@@ -4,6 +4,24 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-22 - Overnight: L2 dump enable bug + fake NodeDB
+
+- **Bugfix:** ctor `disable()` left `Thread::enabled=false`; `Started` only `setIntervalFromNow` → dump never ran. Fix: `enabled=true` before arming interval.
+- **Bugfix:** begin/dump counted requester’s own TEXTs; desk 2-node looked like silent dump. Fix: `availableCountNotFrom` + skip `from==dest` in `sendNextPayload` (S&F-like).
+- Desk: after flash, `ROUTER_HISTORY` PASS; fat NodeDB 45→82 via `fake_nodedb_stress.py`, rebootCount stable under fill (flashes bumped count later).
+- L1.5 FreeHop still not CDC-proven. Summary: `MORNING_SUMMARY.md`.
+
+---
+
+## 2026-10-22 - Desk HW smoke (V4 + T114 clean)
+
+- T114 wiped + clean UF2 `heltec-mesh-node-t114` → USB CDC restored; LongFast both nodes.
+- Harness `scripts/desk_smoke.py`: S0/S1/S2/RF1/L15a/L2c/MEM1 PASS; L2 poll dump WARN (later fixed overnight); RF reverse FAIL/race.
+- L1.5: favorite direct packets show `hopStart==hopLimit` at roof (precondition); FreeHop log not captured on CDC.
+- Details: `HW_TEST_RESULTS.md`.
+
+---
+
 ## 2026-10-21 - L1.5 free-hop (#8366)
 
 - `ClientBaseHop.h` + wire in `NextHopRouter::perhapsRebroadcast`.

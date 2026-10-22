@@ -24,7 +24,8 @@
 - [x] L2-P1: ingest secondary TEXT + Unity `test_client_base_l2_ingest`
 - [x] L2-P2: poll/unicast + Unity `test_client_base_l2_poll` (D1=A)
 - [x] L2-P3: caps/docs/stats/schema polish
-- [ ] L2-P5: hardware smoke UC6 (stretch)
+- [x] L2-P5: hardware smoke partial (header E2E + MEM2 fake NodeDB); UC6 offline window still field
+- [x] Commit overnight L2 enable + skip-own fixes
 - [ ] L2 nRF flash backend (RAM ok for first ESP path)
 - [x] M2 opt-in primary TEXT elevate (runtime; default off)
 - [ ] M2 protobuf config key + app surface (persist)
