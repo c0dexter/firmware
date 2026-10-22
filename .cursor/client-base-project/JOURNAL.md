@@ -4,6 +4,13 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-22 - Priority queue + merge develop
+
+- Locked **QUEUE.md**: P0 hygiene → P1 L2-P4 → P2 M2 proto → P3 UC6 → FVP.
+- #12180 still OPEN: keep secondary-scoped L1; complement when it lands (not replace).
+- Merged `origin/develop` (protobufs, signing, nodara, …); Channels auto-merged. Unity L1 13/13, L2 dump 3/3, L1.5 8/8 green.
+- Next coding: L2-P4.1 backend interface (no flash I/O on RX hot path).
+
 ## 2026-10-22 - Dump wire Unity + encode shrink-to-fit
 
 - Extracted `ClientBaseSecretaryDump.h`; module calls `clientBaseSecretaryPrepareDumpPacket`.

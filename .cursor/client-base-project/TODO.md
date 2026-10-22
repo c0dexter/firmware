@@ -28,12 +28,12 @@
 - [x] Commit overnight L2 enable + skip-own fixes
 - [x] Dump wire: SF `ROUTER_TEXT_*` + hop `has_bitfield` (legacy DM / pre-hop drop)
 - [x] Unity: pin dump wire (`test_client_base_l2_dump` 3/3) + shrink-to-fit Data.payload
-- [ ] L2 nRF flash backend (RAM ok for first ESP path) - queue
+- [ ] L2-P4 nRF flash backend — **QUEUE P1 next** (ESP RAM ships today)
 - [x] M2 opt-in primary TEXT elevate (runtime; default off)
-- [ ] M2 protobuf config key + app surface (persist) - queue
-- [ ] Caps + honest primary opt-in docs; PR-ready - queue
-- [ ] Rebase/reconcile L1 vs upstream #12180 - queue (before more L1)
-- [ ] UC6 offline hours field proof - queue (desk stretch)
+- [ ] M2 protobuf config key + app surface (persist) — QUEUE P2
+- [ ] Caps + honest primary opt-in docs; PR-ready — with upstream PR
+- [x] Merge `origin/develop` (2026-10-22); #12180 still open → L1 stance locked (QUEUE / UPSTREAM_WATCH)
+- [ ] UC6 offline hours field proof — QUEUE P3
 
 ## Adjacent (not blocking L2)
 

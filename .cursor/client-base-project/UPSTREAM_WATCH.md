@@ -1,6 +1,6 @@
 # Upstream watch - baseline, 2.8/2.9 CLIENT_BASE, 3.0
 
-_Last updated: 2026-10-21_
+_Last updated: 2026-10-22_
 
 ## What we build on today
 
@@ -11,7 +11,8 @@ _Last updated: 2026-10-21_
 | Lineage               | **`v2.8.1`** included; tip near current `develop`                             |
 | Latest public release | **2.8.1 Alpha** ([releases](https://github.com/meshtastic/firmware/releases)) |
 
-Hygiene: rebase/merge `origin/develop` before the next L2 coding session.
+Hygiene: rebase/merge `origin/develop` before long coding sessions.  
+**2026-10-22:** merged `origin/develop` into feature branch (clean; Channels auto-merged). Our L1 secondary + L1.5 + L2 dump Unity still green.
 
 ---
 
@@ -24,21 +25,18 @@ Same root pain as UC1 (broadcast cancel-on-dupe → indoor misses). **Different 
 | Ref                                                                                             | Status                                                   | Approach                                                                                                                                                                                         | vs our L1                                                        |
 | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
 | [#12156](https://github.com/meshtastic/firmware/issues/12156) CLIENT_BASE Improvements          | Open                                                     | Proposals: 0-hop late fill-in ± power backoff; or TEXT-only elevate                                                                                                                              | Validates problem; airtime concern same as ours                  |
-| **[#12180](https://github.com/meshtastic/firmware/pull/12180)** fill-in for favorited neighbors | **Open**, milestoned toward **2.8.3**, targets `develop` | On **all broadcasts**: if CLIENT_BASE has **direct** favorite (`hops_away==0`), **don’t cancel** on foreign dupe → late window; cancel only if favorite itself relayed (`resolveUniqueLastByte`) | **Conflict / merge risk** with our secondary-scoped never-cancel |
+| **[#12180](https://github.com/meshtastic/firmware/pull/12180)** fill-in for favorited neighbors | **Still OPEN** (2026-10-22), `MERGEABLE`, targets `develop` | On **all broadcasts**: if CLIENT_BASE has **direct** favorite (`hops_away==0`), **don’t cancel** on foreign dupe → late window; cancel only if favorite itself relayed (`resolveUniqueLastByte`) | **Conflict / merge risk** with our secondary-scoped never-cancel |
 | [#10704](https://github.com/meshtastic/firmware/issues/10704) roof S&F / pull missing msgs      | Closed stale                                             | Pull history from roof (0-hop answer)                                                                                                                                                            | **Aligns with our L2** direction                                 |
 
 **Our L1 (locked):** never-cancel + late only on **configured SECONDARY**; primary stays CLIENT-like (opt-in TEXT later = M2).
 
 **Their #12180:** never-cancel (late fill-in) on **any broadcast** when a direct favorite exists - including **public primary**. Closer to scoped ROUTER_LATE while someone is “home”; field data shows large delivery win and still less TX than full ROUTER_LATE when favorite proves RX.
 
-#### What we should do when resuming
+#### Locked stance (2026-10-22)
 
-1. **Re-read #12180** before more L1 diffs; check if merged into `develop`.
-2. If **merged**: rebase our branch; decide:
-   - **Complement:** keep secondary elevation as extra guarantee (even without “presence” / hops_away), and rely on #12180 for primary when favorite is direct; or
-   - **Narrow ours:** drop redundant parts if #12180 already covers secondary; keep hash-resolution helpers + tests.
-3. If **not merged**: continue our secondary-scoped path (mesh-safer default per our sims); optionally comment on #12156/#12180 linking analysis (secondary-only system score).
-4. **Do not** blindly adopt “always fill-in all channels” as our default - contradicts locked L1 policy / sim winner `l1_secondary_only`.
+1. **#12180 not merged** → keep shipping **secondary-scoped** L1 (sim winner). No L1 code changes until it lands or we consciously adopt a complement.
+2. **When #12180 merges:** rebase; prefer **Complement** (keep secondary guarantee without needing hops_away==0; let #12180 cover primary when favorite is direct). Do **not** replace our default with all-channel fill-in.
+3. Optional: comment on #12156/#12180 linking `ANALYSIS_AND_SIMULATION.md` secondary-only score (operator call).
 
 ### P1 - L2 validation
 

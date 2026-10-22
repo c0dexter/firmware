@@ -1,6 +1,6 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-22 - L2 dump wire Unity `test_client_base_l2_dump`; queue: #12180, L2-P4, M2 proto_
+_Last updated: 2026-10-22 - merged origin/develop; queue locked in QUEUE.md (next = L2-P4)_
 
 ## Branch / remote
 
@@ -26,9 +26,11 @@ _Last updated: 2026-10-22 - L2 dump wire Unity `test_client_base_l2_dump`; queue
 
 ## Next
 
-1. **Queue:** rebase/reconcile vs #12180 (before more L1); L2-P4 nRF flash; M2 protobuf persist; UC6 field hours.
-2. Optional polish: client UX for `ROUTER_TEXT_*` (FVP); flash home to tip matching roof.
-3. Upstream PR when MVP docs ready (omit `.cursor/` if reviewers prefer)
+See **[QUEUE.md](QUEUE.md)** (locked priority order).
+
+1. **Next:** L2-P4 nRF flash backend (P4.1 interface first).
+2. Then M2 protobuf; UC6 field; FVP UX / upstream PR.
+3. **No new L1** until #12180 merges or we re-decide (stance in UPSTREAM_WATCH).
 
 ## Explicitly not started
 
