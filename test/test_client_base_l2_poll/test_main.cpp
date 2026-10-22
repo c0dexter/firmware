@@ -56,6 +56,19 @@ static void test_empty_when_favorite_has_nothing(void)
     TEST_ASSERT_TRUE(store->hasFavorite(0xA1));
 }
 
+static void test_empty_when_only_requester_own_texts(void)
+{
+    // Desk 2-node often only seeds home→roof; those must not count as dumpable history.
+    TEST_ASSERT_TRUE(store->ensureFavorite(0xA1));
+    store->push(makeRec(0xA1, 1, 1, 10, "self0"), 10);
+    store->push(makeRec(0xA1, 2, 1, 11, "self1"), 11);
+    TEST_ASSERT_EQUAL_UINT16(2, store->availableCount(0xA1));
+    TEST_ASSERT_EQUAL_UINT16(0, store->availableCountNotFrom(0xA1, 0xA1));
+    TEST_ASSERT_EQUAL((int)ClientBaseSecretaryPollStart::Empty,
+                      (int)clientBaseSecretaryBeginPoll(*store, session, 0xA1, true, 32));
+    TEST_ASSERT_FALSE(session.busy);
+}
+
 static void test_started_pulls_and_advances_cursor_only(void)
 {
     TEST_ASSERT_TRUE(store->ensureFavorite(0xA1));
@@ -133,6 +146,7 @@ void setup()
     UNITY_BEGIN();
     RUN_TEST(test_reject_non_favorite);
     RUN_TEST(test_empty_when_favorite_has_nothing);
+    RUN_TEST(test_empty_when_only_requester_own_texts);
     RUN_TEST(test_started_pulls_and_advances_cursor_only);
     RUN_TEST(test_busy_blocks_second_poller);
     RUN_TEST(test_history_return_max_caps_session);

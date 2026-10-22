@@ -61,6 +61,9 @@ class ClientBaseSecretaryStore
     /** Messages available for this favorite (cursor → live tail). 0 if unknown node. */
     uint16_t availableCount(NodeNum node) const;
 
+    /** Like availableCount but skip records whose from == excludeFrom (requester's own TEXTs). */
+    uint16_t availableCountNotFrom(NodeNum node, NodeNum excludeFrom) const;
+
     /**
      * Copy next record for node into out and advance that cursor only.
      * Returns false if none available or node not registered.

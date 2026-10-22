@@ -119,6 +119,8 @@ bool ClientBaseSecretaryModule::handleReceivedProtobuf(const meshtastic_MeshPack
         case ClientBaseSecretaryPollStart::Started:
             sendHistoryHeader(from, session_.remaining);
             LOG_INFO("ClientBaseSecretary: dump %u msg to 0x%08x (enq=%u)", session_.remaining, from, statEnqueued_);
+            // Ctor leave-disabled: setIntervalFromNow alone does not arm Thread::enabled.
+            enabled = true;
             setIntervalFromNow(CLIENT_BASE_SECRETARY_PACKET_INTERVAL_MS);
             break;
         case ClientBaseSecretaryPollStart::Rejected:
@@ -183,9 +185,22 @@ bool ClientBaseSecretaryModule::sendNextPayload()
 
     const NodeNum dest = session_.busyTo;
     ClientBaseLeanRecord rec;
-    if (!store_.peekNext(dest, rec)) {
-        clientBaseSecretaryPollClear(session_);
-        return false;
+    // Skip requester's own TEXTs (same as classic S&F); desk 2-node seeds are often from==dest.
+    while (true) {
+        if (!store_.peekNext(dest, rec)) {
+            clientBaseSecretaryPollClear(session_);
+            return false;
+        }
+        if (rec.from != dest) {
+            break;
+        }
+        ClientBaseLeanRecord skip;
+        if (!clientBaseSecretaryPollPullNext(store_, session_, skip)) {
+            return false;
+        }
+        if (!session_.busy) {
+            return false;
+        }
     }
 
     meshtastic_MeshPacket *p = router->allocForSending();

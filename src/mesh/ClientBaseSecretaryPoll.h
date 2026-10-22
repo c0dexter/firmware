@@ -50,7 +50,8 @@ inline ClientBaseSecretaryPollStart clientBaseSecretaryBeginPoll(ClientBaseSecre
         return ClientBaseSecretaryPollStart::Rejected;
     }
 
-    uint16_t avail = store.availableCount(requester);
+    // Exclude requester's own TEXTs (classic S&F behavior; avoids from==to dump noise).
+    uint16_t avail = store.availableCountNotFrom(requester, requester);
     if (historyReturnMax == 0) {
         historyReturnMax = CLIENT_BASE_SECRETARY_HISTORY_RETURN_MAX;
     }

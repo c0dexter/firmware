@@ -184,6 +184,29 @@ uint16_t ClientBaseSecretaryStore::availableCount(NodeNum node) const
     return static_cast<uint16_t>(newest - cursor + 1);
 }
 
+uint16_t ClientBaseSecretaryStore::availableCountNotFrom(NodeNum node, NodeNum excludeFrom) const
+{
+    const int ci = findCursor(node);
+    if (ci < 0 || size_ == 0)
+        return 0;
+    const uint32_t oldest = ring_[head_].seq;
+    const uint32_t newest = oldest + size_ - 1;
+    uint32_t cursor = cursors_[ci].nextSeq;
+    if (cursor < oldest)
+        cursor = oldest;
+    if (cursor > newest)
+        return 0;
+    uint16_t n = 0;
+    for (uint32_t seq = cursor; seq <= newest; seq++) {
+        ClientBaseLeanRecord rec;
+        if (!copyAtSeq(seq, rec))
+            break;
+        if (rec.from != excludeFrom)
+            n++;
+    }
+    return n;
+}
+
 bool ClientBaseSecretaryStore::copyAtSeq(uint32_t seq, ClientBaseLeanRecord &out) const
 {
     const uint16_t idx = indexOfSeq(seq);
