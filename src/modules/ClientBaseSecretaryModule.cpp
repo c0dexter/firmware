@@ -8,7 +8,7 @@
 #include "Router.h"
 #include "configuration.h"
 #include "gps/RTC.h"
-#include "mesh-pb-constants.h"
+#include "mesh/ClientBaseSecretaryDump.h"
 #include "mesh/ClientBaseSecretaryIngest.h"
 #include "mesh/ClientBaseSecretaryPolicy.h"
 
@@ -210,35 +210,8 @@ bool ClientBaseSecretaryModule::sendNextPayload()
         return true;
     }
 
-    p->to = dest;
-    p->from = rec.from;
-    // Fresh PacketId: reusing rec.id is a dupe if the favorite already heard the live TX.
-    // Do not send channel-PSK TEXT unicasts: Router rejects them as "legacy DM". Match
-    // classic StoreForwardModule: STORE_FORWARD ROUTER_TEXT_* wrapper (forged from OK).
-    p->channel = rec.channel;
-    p->want_ack = false;
-    p->hop_limit = 0;
-    p->hop_start = 0;
-    // Forged from skips Router::send's isFromUs hop_start/bitfield init; without has_bitfield,
-    // receivers treat 0/0 as pre-hop firmware and post-decode drop (never reach the phone).
-    p->decoded.has_bitfield = true;
-    p->priority = meshtastic_MeshPacket_Priority_BACKGROUND;
-
-    meshtastic_StoreAndForward sf = meshtastic_StoreAndForward_init_zero;
-    sf.rr = meshtastic_StoreAndForward_RequestResponse_ROUTER_TEXT_BROADCAST;
-    sf.which_variant = meshtastic_StoreAndForward_text_tag;
-    const size_t textMax = sizeof(sf.variant.text.bytes);
-    const size_t n = rec.payload_len > textMax ? textMax : rec.payload_len;
-    sf.variant.text.size = n;
-    if (n) {
-        memcpy(sf.variant.text.bytes, rec.payload, n);
-    }
-    if (rec.id) {
-        sf.original_id = rec.id;
-    }
-    p->decoded.portnum = meshtastic_PortNum_STORE_FORWARD_APP;
-    p->decoded.payload.size =
-        pb_encode_to_bytes(p->decoded.payload.bytes, sizeof(p->decoded.payload.bytes), &meshtastic_StoreAndForward_msg, &sf);
+    // allocForSending already set a fresh PacketId (do not reuse rec.id - live dupe).
+    clientBaseSecretaryPrepareDumpPacket(*p, dest, rec);
 
     ClientBaseLeanRecord advanced;
     if (!clientBaseSecretaryPollPullNext(store_, session_, advanced)) {

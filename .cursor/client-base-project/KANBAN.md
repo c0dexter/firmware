@@ -19,8 +19,8 @@ Sync manually with GitHub Project when available.
 - [x] MVP: Unity tests current vs desired L1 (secondary never-cancel)
 - [x] MVP: implement L1 + tests
 - [x] MVP: L2 ring + per-favorite cursor store + Unity (`ClientBaseSecretaryStore`)
-- [ ] MVP: L2 module ingest + poll/unicast + tests
-- [ ] MVP: caps (`history_return_max`, max favorites) + docs PR-ready
+- [x] MVP: L2 module ingest + poll/unicast + tests (`test_client_base_l2_*` + desk L2d)
+- [ ] MVP: caps docs PR-ready / upstream-facing (code caps already in Policy.h)
 
 ## Backlog (FVP - after MVP)
 

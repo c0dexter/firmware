@@ -4,6 +4,12 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-22 - Dump wire Unity + encode shrink-to-fit
+
+- Extracted `ClientBaseSecretaryDump.h`; module calls `clientBaseSecretaryPrepareDumpPacket`.
+- Unity `test_client_base_l2_dump` 3/3: ROUTER_TEXT not plain TEXT; 0/0+bitfield VALID; large lean payload shrinks until SF fits Data.payload.
+- Pushed dump fix `babe610bf` to fork. Queue kept: #12180, L2-P4 nRF, M2 proto, UC6 field.
+
 ## 2026-10-22 - L2 dump TEXT E2E PASS (Xiao 3rd node)
 
 - Desk: V4 roof + T114 home + Xiao nRF peer `!2cdd1088`.

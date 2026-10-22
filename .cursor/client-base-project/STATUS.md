@@ -1,6 +1,6 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-22 - L2 dump E2E PASS; dump wire fix committed (branch ahead of fork by 1)_
+_Last updated: 2026-10-22 - L2 dump wire Unity `test_client_base_l2_dump`; queue: #12180, L2-P4, M2 proto_
 
 ## Branch / remote
 
@@ -26,9 +26,9 @@ _Last updated: 2026-10-22 - L2 dump E2E PASS; dump wire fix committed (branch ah
 
 ## Next
 
-1. Follow-up bugs / polish (next commit): Unity for dump wire shape; client UX for `ROUTER_TEXT_*`; any residual desk debt.
-2. Optional: M2 protobuf config key; L2-P4 nRF flash
-3. Upstream PR (omit `.cursor/` if reviewers prefer)
+1. **Queue:** rebase/reconcile vs #12180 (before more L1); L2-P4 nRF flash; M2 protobuf persist; UC6 field hours.
+2. Optional polish: client UX for `ROUTER_TEXT_*` (FVP); flash home to tip matching roof.
+3. Upstream PR when MVP docs ready (omit `.cursor/` if reviewers prefer)
 
 ## Explicitly not started
 

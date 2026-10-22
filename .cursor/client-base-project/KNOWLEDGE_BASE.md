@@ -72,6 +72,7 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 - Module listens STORE_FORWARD `CLIENT_HISTORY` (favorite ACL silent reject); `ROUTER_BUSY` / `ROUTER_HISTORY`; dump as **STORE_FORWARD `ROUTER_TEXT_*`** unicast `hop_limit=0` on stored channel (D1=A); one dump at a time.
 - **2026-10-22 desk bugs:** (1) after ctor `disable()`, must `enabled=true` before `setIntervalFromNow` or dump thread never runs; (2) exclude `from==requester` from available/dump (classic S&F); else 2-node self-seeds inflate header and forge from==to TEXT home ignores; (3) raw channel-PSK **TEXT** unicast is rejected as **legacy DM** (`Router::perhapsDecode`) - dump must wrap like classic S&F; (4) forged `from` skips `isFromUs` hop_start/bitfield init → receivers **post-decode pre-hop drop** on 0/0 without `has_bitfield` - set `decoded.has_bitfield=true` (and fresh PacketId; `original_id=rec.id`).
 - **Desk E2E PASS (3-node):** peer Xiao `!2cdd1088` secondary TEXT → roof ingest → home poll → `ROUTER_TEXT_BROADCAST` from=peer to=home delivered to phone.
+- **Dump helper:** `ClientBaseSecretaryDump.h` + Unity `test_client_base_l2_dump`. Shrink text until SF encodes into `DATA_PAYLOAD_LEN` (233); full 233-byte S&F text field does not fit framing (silent `pb_encode_to_bytes` → 0).
 
 ### L2-P3 polish (current)
 

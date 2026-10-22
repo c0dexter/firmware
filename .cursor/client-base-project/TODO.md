@@ -27,11 +27,13 @@
 - [x] L2-P5: hardware smoke (header + 3-node dump `ROUTER_TEXT_*` + MEM2); UC6 offline hours still field
 - [x] Commit overnight L2 enable + skip-own fixes
 - [x] Dump wire: SF `ROUTER_TEXT_*` + hop `has_bitfield` (legacy DM / pre-hop drop)
-- [ ] Unity: pin dump wire shape (ROUTER_TEXT + bitfield) - deferred next commit
-- [ ] L2 nRF flash backend (RAM ok for first ESP path)
+- [x] Unity: pin dump wire (`test_client_base_l2_dump` 3/3) + shrink-to-fit Data.payload
+- [ ] L2 nRF flash backend (RAM ok for first ESP path) - queue
 - [x] M2 opt-in primary TEXT elevate (runtime; default off)
-- [ ] M2 protobuf config key + app surface (persist)
-- [ ] Caps + honest primary opt-in docs; PR-ready
+- [ ] M2 protobuf config key + app surface (persist) - queue
+- [ ] Caps + honest primary opt-in docs; PR-ready - queue
+- [ ] Rebase/reconcile L1 vs upstream #12180 - queue (before more L1)
+- [ ] UC6 offline hours field proof - queue (desk stretch)
 
 ## Adjacent (not blocking L2)
 
