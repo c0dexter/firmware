@@ -4,6 +4,22 @@ Append-only work log. Newest entries at the top.
 
 ---
 
+## 2026-10-22 - L2 dump TEXT E2E PASS (Xiao 3rd node)
+
+- Desk: V4 roof + T114 home + Xiao nRF peer `!2cdd1088`.
+- Home RX of forged dump failed twice: (1) channel TEXT DM → `Rejecting legacy DM`; (2) after SF wrap, `post-decode pre-hop drop` on 0/0 without `has_bitfield`.
+- Fix on roof: dump as `ROUTER_TEXT_BROADCAST` + `has_bitfield=true` + fresh PacketId / `original_id`.
+- **PASS:** home phone got `STORE_FORWARD ROUTER_TEXT_BROADCAST` fr=peer to=home with seed text. Uncommitted until operator asks.
+
+## 2026-10-22 - L1.5 FreeHopBumpStart proven on desk
+
+- Enabled `security.debug_log_api_enabled` on V4; subscribe `meshtastic.log.line`.
+- Home favorite TX broadcast (ch0/ch1): roof logs `CLIENT_BASE L1.5 free hop from favorite: hop_start=4 hop_limit=3` after RX with `hopStart==hopLimit==3`.
+- Push: overnight L2 commits on `fork` (`9a7a93669` / `ca9b956d4`).
+- RF3 roof→home secondary retest **5/5 PASS** (earlier harness FAIL was listen race).
+
+---
+
 ## 2026-10-22 - Overnight: L2 dump enable bug + fake NodeDB
 
 - **Bugfix:** ctor `disable()` left `Thread::enabled=false`; `Started` only `setIntervalFromNow` → dump never ran. Fix: `enabled=true` before arming interval.

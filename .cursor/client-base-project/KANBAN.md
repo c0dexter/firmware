@@ -38,7 +38,7 @@ Sync manually with GitHub Project when available.
 - [x] L2-P1 ingest secondary TEXT + Unity (`test_client_base_l2_ingest`)
 - [x] L2-P2 poll session + module dump (`test_client_base_l2_poll`)
 - [x] L2-P3 caps/docs polish
-- [x] L2-P5 hardware smoke (partial: L2 header E2E + fake NodeDB; dump TEXT / L1.5 log still open)
+- [x] L2-P5 hardware smoke (L2 header + dump `ROUTER_TEXT_*` 3-node PASS; fake NodeDB; L1.5 FreeHop)
 
 ## Verification
 

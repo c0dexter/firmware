@@ -1,6 +1,6 @@
 # Status - CLIENT_BASE (snapshot)
 
-_Last updated: 2026-10-22 - L2 dump enable fix + fake NodeDB stress; stretch = L1.5 log / 3rd-node dump TEXT_
+_Last updated: 2026-10-22 - L2 dump E2E PASS; dump wire fix committed (branch ahead of fork by 1)_
 
 ## Branch / remote
 
@@ -26,7 +26,7 @@ _Last updated: 2026-10-22 - L2 dump enable fix + fake NodeDB stress; stretch = L
 
 ## Next
 
-1. **Desk P5 open:** L1.5 hop_start CDC proof; dump TEXT with third-party `from`; RF3 reverse. See `HW_TEST_RESULTS.md` / `MORNING_SUMMARY.md`.
+1. Follow-up bugs / polish (next commit): Unity for dump wire shape; client UX for `ROUTER_TEXT_*`; any residual desk debt.
 2. Optional: M2 protobuf config key; L2-P4 nRF flash
 3. Upstream PR (omit `.cursor/` if reviewers prefer)
 

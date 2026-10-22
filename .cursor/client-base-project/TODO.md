@@ -24,8 +24,10 @@
 - [x] L2-P1: ingest secondary TEXT + Unity `test_client_base_l2_ingest`
 - [x] L2-P2: poll/unicast + Unity `test_client_base_l2_poll` (D1=A)
 - [x] L2-P3: caps/docs/stats/schema polish
-- [x] L2-P5: hardware smoke partial (header E2E + MEM2 fake NodeDB); UC6 offline window still field
+- [x] L2-P5: hardware smoke (header + 3-node dump `ROUTER_TEXT_*` + MEM2); UC6 offline hours still field
 - [x] Commit overnight L2 enable + skip-own fixes
+- [x] Dump wire: SF `ROUTER_TEXT_*` + hop `has_bitfield` (legacy DM / pre-hop drop)
+- [ ] Unity: pin dump wire shape (ROUTER_TEXT + bitfield) - deferred next commit
 - [ ] L2 nRF flash backend (RAM ok for first ESP path)
 - [x] M2 opt-in primary TEXT elevate (runtime; default off)
 - [ ] M2 protobuf config key + app surface (persist)
@@ -34,7 +36,7 @@
 ## Adjacent (not blocking L2)
 
 - [x] **L1.5 free-hop for favorites** - `ClientBaseHop.h` + NextHopRouter; Unity `test_client_base_l15_hop` (#8366)
-- [ ] L1.5 field check with P5 hardware smoke (dom→dach hop_start bump)
+- [x] L1.5 desk proof: FreeHopBumpStart via `security.debug_log_api_enabled` (`hop_start=4 hop_limit=3`)
 
 ## FVP (later)
 

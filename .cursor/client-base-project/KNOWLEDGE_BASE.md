@@ -69,8 +69,9 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 ### L2-P2 poll (current)
 
 - `ClientBaseSecretaryPoll.h` - begin/busy/empty/pull/abort; Unity `test_client_base_l2_poll` (incl. skip-own-from Empty).
-- Module listens STORE_FORWARD `CLIENT_HISTORY` (favorite ACL silent reject); `ROUTER_BUSY` / `ROUTER_HISTORY`; dump TEXT unicast `hop_limit=0` on stored channel; one dump at a time.
-- **2026-10-22 desk bugs:** (1) after ctor `disable()`, must `enabled=true` before `setIntervalFromNow` or dump thread never runs; (2) exclude `from==requester` from available/dump (classic S&F); else 2-node self-seeds inflate header and forge from==to TEXT home ignores.
+- Module listens STORE_FORWARD `CLIENT_HISTORY` (favorite ACL silent reject); `ROUTER_BUSY` / `ROUTER_HISTORY`; dump as **STORE_FORWARD `ROUTER_TEXT_*`** unicast `hop_limit=0` on stored channel (D1=A); one dump at a time.
+- **2026-10-22 desk bugs:** (1) after ctor `disable()`, must `enabled=true` before `setIntervalFromNow` or dump thread never runs; (2) exclude `from==requester` from available/dump (classic S&F); else 2-node self-seeds inflate header and forge from==to TEXT home ignores; (3) raw channel-PSK **TEXT** unicast is rejected as **legacy DM** (`Router::perhapsDecode`) - dump must wrap like classic S&F; (4) forged `from` skips `isFromUs` hop_start/bitfield init → receivers **post-decode pre-hop drop** on 0/0 without `has_bitfield` - set `decoded.has_bitfield=true` (and fresh PacketId; `original_id=rec.id`).
+- **Desk E2E PASS (3-node):** peer Xiao `!2cdd1088` secondary TEXT → roof ingest → home poll → `ROUTER_TEXT_BROADCAST` from=peer to=home delivered to phone.
 
 ### L2-P3 polish (current)
 
@@ -85,6 +86,7 @@ Upstream / 3.0: **[UPSTREAM_WATCH.md](UPSTREAM_WATCH.md)**.
 - Loop safety: FreeHop only when `hopsAway==0`; after bump, next CLIENT_BASE sees hopsAway≥1 → NormalDecrement (no attic chain inventing budget).
 - Unity `test_client_base_l15_hop`.
 - Distinct from `shouldDecrementHopLimit` favorite-ROUTER preserve (still used on NormalDecrement path).
+- **Desk 2026-10-22:** FreeHopBumpStart observed via LogRecord API (`hop_start` 3→4, `hop_limit` kept 3) on Heltec V4 CLIENT_BASE ← T114 favorite.
 
 ## Simulation summary (pointer)
 

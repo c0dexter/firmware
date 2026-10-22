@@ -35,7 +35,7 @@ _Sim (private-only urban): ~59% → ~86% home delivery._
 
 **Given** shared buffer, TTL 24h, cursors; both favorited on roof  
 **When** Anna sends `CLIENT_HISTORY` then Bart later  
-**Then** each gets TEXT unicasts from their own cursor; ring not purged; second poller during dump gets `ROUTER_BUSY`
+**Then** each gets `ROUTER_TEXT_*` unicasts from their own cursor; ring not purged; second poller during dump gets `ROUTER_BUSY`
 
 _Sim: purge-on-ACK would drop ~24 shared msgs for Bart. Wire: `schemas.md` L2 poll._
 

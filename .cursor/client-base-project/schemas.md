@@ -80,7 +80,7 @@ sequenceDiagram
   else started
     Roof->>Home: ROUTER_HISTORY (n≤history_return_max)
     loop each message spaced ~2.5s
-      Roof->>Home: TEXT unicast hop_limit=0 (same secondary)
+      Roof->>Home: STORE_FORWARD ROUTER_TEXT_* unicast hop_limit=0 (same secondary; forged from)
       Note over Roof: advance cursor_Home only
     end
   end

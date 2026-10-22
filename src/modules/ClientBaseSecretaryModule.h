@@ -11,7 +11,8 @@
 /**
  * CLIENT_BASE household secretary (L2).
  * P1 ingest secondary TEXT; P2 poll via STORE_FORWARD_APP RR (D1=A).
- * Payloads dump as local TEXT unicast on the stored secondary channel (hop_limit=0).
+ * Payloads dump as STORE_FORWARD ROUTER_TEXT_* unicast on the stored secondary (hop_limit=0).
+ * (Raw TEXT DM on channel PSK is rejected as legacy DM by Router::perhapsDecode.)
  */
 class ClientBaseSecretaryModule : private concurrency::OSThread, public ProtobufModule<meshtastic_StoreAndForward>
 {
